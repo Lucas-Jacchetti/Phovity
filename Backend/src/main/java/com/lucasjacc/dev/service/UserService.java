@@ -1,10 +1,9 @@
 package com.lucasjacc.dev.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.lucasjacc.dev.dto.user.UserCreateDto;
 import com.lucasjacc.dev.dto.user.UserResponseDto;
 import com.lucasjacc.dev.mapper.UserMapper;
@@ -15,9 +14,10 @@ import com.lucasjacc.dev.repository.UserRepository;
 public class UserService {
     
     private UserRepository repository;
-
-    public UserService(UserRepository repository){
+    private PasswordEncoder passwordEncoder;
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder){
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserResponseDto> getAll(){
@@ -30,11 +30,15 @@ public class UserService {
     }
 
     public UserResponseDto create(UserCreateDto dto){
-        User user = new User();
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword()); // precisa de criptografia
-        user.setCreatedAt(LocalDateTime.now());
+        if (repository.findByUsername(dto.getUserName()).isPresent()) {
+            return null;
+        }
+        if (repository.findByEmail(dto.getEmail()).isPresent()) {
+            return null;
+        }
+        
+        User user = UserMapper.toEntity(dto);
+         user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         User saved = repository.save(user);
         return UserMapper.toResponse(saved);

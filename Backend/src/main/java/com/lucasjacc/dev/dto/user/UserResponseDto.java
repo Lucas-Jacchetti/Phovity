@@ -10,6 +10,9 @@ import lombok.Setter;
 public class UserResponseDto {
     private Long id;
     private String name;
+    private String userName;
     private String bio;
     private String profileImgUrl;
+    private String createdAt;   
+    private String email;
 }
