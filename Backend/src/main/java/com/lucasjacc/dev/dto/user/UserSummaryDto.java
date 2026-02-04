@@ -1,7 +1,10 @@
 package com.lucasjacc.dev.dto.user;
 
+import lombok.Data;
+
+@Data
 public class UserSummaryDto {
-    public Long id;
-    public String username;
-    public String profileImageUrl;
+    private Long id;
+    private String username;
+    private String profileImageUrl;
 }

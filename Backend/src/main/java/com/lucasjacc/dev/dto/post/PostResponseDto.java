@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PostResponseDtio {
+public class PostResponseDto {
     private Long id;
     private String cratedAt;
     private String postImgUrl;

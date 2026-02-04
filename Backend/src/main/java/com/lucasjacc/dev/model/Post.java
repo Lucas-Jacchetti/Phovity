@@ -27,6 +27,8 @@ public class Post {
     private String postImgUrl;
     private String description;
     private LocalDateTime createdAt;
+    private Integer like;
+    private Integer commentCount;
 
     @ManyToOne
     private User author;

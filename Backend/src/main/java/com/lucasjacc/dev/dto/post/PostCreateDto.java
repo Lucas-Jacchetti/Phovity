@@ -1,8 +1,5 @@
 package com.lucasjacc.dev.dto.post;
 
-
-
-
 import lombok.Getter;
 
 import lombok.Setter;
