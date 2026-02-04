@@ -1,11 +1,11 @@
 package com.lucasjacc.dev.model;
 
-import java.time.LocalDateTime;
+import org.springframework.data.annotation.Id;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,16 +17,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user_table")
-public class User {
+@Table(name = "like_table")
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String password;
-    private String email;
-    private String bio;
-    private String profileImgUrl;
-    private LocalDateTime createdAt;
+    @ManyToOne
+    private User author;
+
+    @ManyToOne
+    private Post post;
 }
