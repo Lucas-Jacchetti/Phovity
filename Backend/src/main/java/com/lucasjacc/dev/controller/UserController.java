@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lucasjacc.dev.model.User;
+import com.lucasjacc.dev.dto.user.UserCreateDto;
+import com.lucasjacc.dev.dto.user.UserResponseDto;
 import com.lucasjacc.dev.service.UserService;
 
 @RestController
@@ -22,18 +23,18 @@ public class UserController {
     private UserService service;
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id){
+    public UserResponseDto getUser(@PathVariable Long id){
         return service.getUser(id);
     }
 
     @GetMapping
-    public List<User> getAll(){
+    public List<UserResponseDto> getAll(){
         return service.getAll();
     }
 
     @PostMapping
-    public User create(@RequestBody User user){
-        return service.saveUser(user);
+    public UserResponseDto create(@RequestBody UserCreateDto dto){
+        return service.create(dto);
     }
 
     @DeleteMapping("/{id}")
