@@ -15,7 +15,7 @@ public class PostMapper {
         dto.setPostImgUrl(post.getPostImgUrl());
         dto.setId(post.getId());
         dto.setDescription(post.getDescription());
-        dto.setCratedAt(post.getCreatedAt().toString());
+        dto.setCreatedAt(post.getCreatedAt());
         dto.setTag(post.getTag());
         return dto;
     }

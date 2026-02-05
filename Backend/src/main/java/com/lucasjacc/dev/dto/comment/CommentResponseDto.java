@@ -4,9 +4,11 @@ import java.time.LocalDateTime;
 
 import com.lucasjacc.dev.dto.user.UserSummaryDto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class CommentResponseDto {
     private Long id;
     private String text;

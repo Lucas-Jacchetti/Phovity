@@ -1,5 +1,7 @@
 package com.lucasjacc.dev.dto.post;
 
+import java.time.LocalDateTime;
+
 import com.lucasjacc.dev.dto.user.UserSummaryDto;
 
 import lombok.Getter;
@@ -9,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class PostResponseDto {
     private Long id;
-    private String cratedAt;
+    private LocalDateTime createdAt;
     private String postImgUrl;
     private String description;
     private String tag;

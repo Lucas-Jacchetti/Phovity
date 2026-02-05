@@ -1,5 +1,6 @@
 package com.lucasjacc.dev.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -27,8 +28,8 @@ public class CommentService {
         this.postRepository = postRepository;
     }
 
-    public List<CommentResponseDto> getAll(){
-        return repository.findAll().stream().map(CommentMapper::toResponse).toList();
+    public List<CommentResponseDto> getByPost(Long postId){
+        return repository.findByPostId(postId).stream().map(CommentMapper::toResponse).toList();
     }
 
 
@@ -39,12 +40,16 @@ public class CommentService {
         comment.setText(dto.getText());
         comment.setAuthor(author);
         comment.setPost(post);
+        comment.setCreatedAt(LocalDateTime.now());
 
         Comment saved = repository.save(comment);
         return CommentMapper.toResponse(saved);
     }   
 
     public void deleteComment(Long id){
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Comentário não encontrado");
+        }
         repository.deleteById(id);
     }
 }

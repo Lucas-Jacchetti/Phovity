@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,15 +18,22 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "like_table")
+@Table(
+  name = "like_table",
+  uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"author_id", "post_id"}),
+  }
+)
 public class Like {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User author;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Post post;
+
 }

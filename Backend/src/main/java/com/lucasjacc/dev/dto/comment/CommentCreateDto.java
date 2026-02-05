@@ -1,8 +1,10 @@
 package com.lucasjacc.dev.dto.comment;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class CommentCreateDto {
     private String text;
     private Long authorId;

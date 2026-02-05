@@ -15,7 +15,7 @@ import com.lucasjacc.dev.dto.post.PostResponseDto;
 import com.lucasjacc.dev.service.PostService;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/posts")
 public class PostController {
     private PostService service;
     public PostController(PostService service){
@@ -32,7 +32,7 @@ public class PostController {
         return service.getPost(id);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/{authorId}")
     public List<PostResponseDto> getPostByUser(@PathVariable Long authorId){
         return service.getByUser(authorId);
     }

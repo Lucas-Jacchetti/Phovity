@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LikeCreateDto {
-    private Long postId;
-    private Long authorId;
+public class LikeResponseDto {
+    private Boolean liked;
+    private long likeCount;
 }

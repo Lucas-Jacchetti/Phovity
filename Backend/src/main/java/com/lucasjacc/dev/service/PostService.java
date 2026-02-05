@@ -34,7 +34,7 @@ public class PostService {
     }
 
     public List<PostResponseDto> getByUser(Long userId) {
-        return repository.findByAuthorId(userId)
+        return repository.findByAuthorId(userId)    
                 .stream()
                 .map(PostMapper::toResponse)
                 .toList();
@@ -43,8 +43,9 @@ public class PostService {
     public PostResponseDto create(PostCreateDto dto){
         User author = userRepository.findById(dto.getAuthorId()).orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado"));   
         Post post = new Post();
-        post.setTag(dto.getTag());
+        post.setDescription(dto.getDescription());
         post.setPostImgUrl(dto.getPostImgUrl());
+        post.setTag(dto.getTag());
         post.setAuthor(author);
         post.setCreatedAt(LocalDateTime.now());
 

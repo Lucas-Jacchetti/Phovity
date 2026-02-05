@@ -15,16 +15,16 @@ import com.lucasjacc.dev.dto.comment.CommentResponseDto;
 import com.lucasjacc.dev.service.CommentService;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/comments")
 public class CommentController {
     private CommentService service;
     public CommentController(CommentService service){
         this.service = service;
     }
 
-    @GetMapping
-    public List<CommentResponseDto> getComment(){
-        return service.getAll();
+    @GetMapping("/post/{postId}")
+    public List<CommentResponseDto> getCommentByPost(@PathVariable Long postId){
+        return service.getByPost(postId);
     }
 
     @PostMapping

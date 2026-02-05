@@ -1,8 +1,10 @@
 package com.lucasjacc.dev.dto.user;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UserSummaryDto {
     private Long id;
     private String username;
