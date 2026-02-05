@@ -12,9 +12,8 @@ public class PostResponseDto {
     private String cratedAt;
     private String postImgUrl;
     private String description;
+    private String tag;
 
     private UserSummaryDto author;
 
-    private int likes;
-    private int commentCount;
 }

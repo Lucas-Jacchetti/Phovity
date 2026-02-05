@@ -8,4 +8,7 @@ import lombok.Setter;
 @Setter
 public class PostCreateDto {
     private String description;
+    private String tag;
+    private String postImgUrl;
+    private Long authorId;
 }

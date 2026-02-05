@@ -10,36 +10,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lucasjacc.dev.dto.user.UserCreateDto;
-import com.lucasjacc.dev.dto.user.UserResponseDto;
-import com.lucasjacc.dev.service.UserService;
+import com.lucasjacc.dev.dto.post.PostCreateDto;
+import com.lucasjacc.dev.dto.post.PostResponseDto;
+import com.lucasjacc.dev.service.PostService;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
-
-    private UserService service;
-    public UserController(UserService service){
+@RequestMapping("/post")
+public class PostController {
+    private PostService service;
+    public PostController(PostService service){
         this.service = service;
     }
 
-    @GetMapping("/{id}")
-    public UserResponseDto getUser(@PathVariable Long id){
-        return service.getUser(id);
-    }
-
     @GetMapping
-    public List<UserResponseDto> getAll(){
+    public List<PostResponseDto> getAll(){
         return service.getAll();
     }
 
+    @GetMapping("/{id}")
+    public PostResponseDto getPost(@PathVariable Long id){
+        return service.getPost(id);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<PostResponseDto> getPostByUser(@PathVariable Long authorId){
+        return service.getByUser(authorId);
+    }
+
     @PostMapping
-    public UserResponseDto create(@RequestBody UserCreateDto dto){
+    public PostResponseDto create(@RequestBody PostCreateDto dto){
         return service.create(dto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
-        service.deleteUser(id);
+        service.deletePost(id);
     }
 }

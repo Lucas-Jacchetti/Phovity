@@ -25,17 +25,17 @@ public class UserService {
         return repository.findAll().stream().map(UserMapper::toResponse).toList();
     }
 
-    public UserResponseDto getUser(long id){
+    public UserResponseDto getUser(Long id){
         User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         return UserMapper.toResponse(user);
     }
 
     public UserResponseDto create(UserCreateDto dto){
         if (repository.findByUserName(dto.getUserName()).isPresent()) {
-            return null;
+            throw new RuntimeException("Username já existe");
         }
         if (repository.findByEmail(dto.getEmail()).isPresent()) {
-            return null;
+            throw new RuntimeException("Email já existe");
         }
         
         User user = UserMapper.toEntity(dto);

@@ -2,7 +2,6 @@ package com.lucasjacc.dev.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +17,10 @@ import com.lucasjacc.dev.service.CommentService;
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
-    @Autowired
     private CommentService service;
+    public CommentController(CommentService service){
+        this.service = service;
+    }
 
     @GetMapping
     public List<CommentResponseDto> getComment(){

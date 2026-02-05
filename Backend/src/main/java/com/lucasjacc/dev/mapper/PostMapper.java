@@ -16,8 +16,7 @@ public class PostMapper {
         dto.setId(post.getId());
         dto.setDescription(post.getDescription());
         dto.setCratedAt(post.getCreatedAt().toString());
-        dto.setCommentCount(post.getCommentCount());
-        dto.setLikes(post.getLike());
+        dto.setTag(post.getTag());
         return dto;
     }
 
@@ -26,6 +25,7 @@ public class PostMapper {
         post.setAuthor(author);
         post.setDescription(dto.getDescription());
         post.setPostImgUrl(imageUrl);
+        post.setTag(dto.getTag());
         post.setCreatedAt(LocalDateTime.now());
         return post;
     }
