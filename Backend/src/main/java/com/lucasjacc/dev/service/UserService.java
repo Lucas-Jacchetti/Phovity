@@ -9,6 +9,7 @@ import com.lucasjacc.dev.dto.user.UserResponseDto;
 import com.lucasjacc.dev.mapper.UserMapper;
 import com.lucasjacc.dev.model.User;
 import com.lucasjacc.dev.repository.UserRepository;
+import com.lucasjacc.dev.exception.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -25,12 +26,12 @@ public class UserService {
     }
 
     public UserResponseDto getUser(long id){
-        User user = repository.findById(id).orElse(null);
+        User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         return UserMapper.toResponse(user);
     }
 
     public UserResponseDto create(UserCreateDto dto){
-        if (repository.findByUsername(dto.getUserName()).isPresent()) {
+        if (repository.findByUserName(dto.getUserName()).isPresent()) {
             return null;
         }
         if (repository.findByEmail(dto.getEmail()).isPresent()) {
@@ -38,7 +39,7 @@ public class UserService {
         }
         
         User user = UserMapper.toEntity(dto);
-         user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         User saved = repository.save(user);
         return UserMapper.toResponse(saved);

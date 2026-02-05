@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.lucasjacc.dev.dto.comment.CommentCreateDto;
 import com.lucasjacc.dev.dto.comment.CommentResponseDto;
+import com.lucasjacc.dev.exception.ResourceNotFoundException;
 import com.lucasjacc.dev.mapper.CommentMapper;
 import com.lucasjacc.dev.model.Comment;
 import com.lucasjacc.dev.model.Post;
@@ -33,8 +34,8 @@ public class CommentService {
 
     public CommentResponseDto create(CommentCreateDto dto){
         Comment comment = new Comment();
-        User author = userRepository.findById(dto.getAuthorId()).orElse(null);    
-        Post post = postRepository.findById(dto.getPostId()).orElse(null); 
+        User author = userRepository.findById(dto.getAuthorId()).orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado"));    
+        Post post = postRepository.findById(dto.getPostId()).orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
         comment.setText(dto.getText());
         comment.setAuthor(author);
         comment.setPost(post);
