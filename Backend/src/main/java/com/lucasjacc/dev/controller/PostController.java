@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucasjacc.dev.dto.post.PostCreateDto;
@@ -28,8 +29,8 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public PostResponseDto getPost(@PathVariable Long id){
-        return service.getPost(id);
+    public PostResponseDto getPost(@PathVariable Long id, @RequestParam Long userId){
+        return service.getPost(id, userId);
     }
 
     @GetMapping("/user/{authorId}")

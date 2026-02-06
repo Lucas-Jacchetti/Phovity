@@ -11,6 +11,7 @@ import com.lucasjacc.dev.exception.ResourceNotFoundException;
 import com.lucasjacc.dev.mapper.PostMapper;
 import com.lucasjacc.dev.model.Post;
 import com.lucasjacc.dev.model.User;
+import com.lucasjacc.dev.repository.LikeRepository;
 import com.lucasjacc.dev.repository.PostRepository;
 import com.lucasjacc.dev.repository.UserRepository;
 
@@ -18,19 +19,29 @@ import com.lucasjacc.dev.repository.UserRepository;
 public class PostService {
     private PostRepository repository;
     private UserRepository userRepository;
+    private LikeRepository likeRepository;
     
-    public PostService(PostRepository repository, UserRepository userRepository){
+    public PostService(PostRepository repository, UserRepository userRepository, LikeRepository likeRepository){
         this.repository = repository;
         this.userRepository = userRepository;
+        this.likeRepository = likeRepository;
     }
 
     public List<PostResponseDto> getAll(){
         return repository.findAll().stream().map(PostMapper::toResponse).toList();
     }
 
-    public PostResponseDto getPost(Long id){
+    public PostResponseDto getPost(Long id, Long postId){
         Post post = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
-        return PostMapper.toResponse(post);
+
+        long countLikes = likeRepository.countByPostId(postId);
+        boolean likedByMe = likeRepository.existsByPostIdAndAuthorId(id, postId);
+
+        PostResponseDto dto = PostMapper.toResponse(post);
+        dto.setLikeCount(countLikes);
+        dto.setLikedByMe(likedByMe);
+
+        return dto;
     }
 
     public List<PostResponseDto> getByUser(Long userId) {

@@ -15,6 +15,8 @@ public class PostResponseDto {
     private String postImgUrl;
     private String description;
     private String tag;
+    private Long likeCount;
+    private Boolean likedByMe;
 
     private UserSummaryDto author;
 

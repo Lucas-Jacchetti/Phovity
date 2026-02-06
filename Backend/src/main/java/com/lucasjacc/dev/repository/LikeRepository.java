@@ -9,6 +9,7 @@ import com.lucasjacc.dev.model.Like;
 
 public interface LikeRepository extends JpaRepository<Like, Long>{
     Optional<Like> findByAuthorIdAndPostId(Long authorId, Long postId);
+    boolean existsByPostIdAndAuthorId(Long postId, Long authorId);
 
     long countByPostId(Long postId);
 }
