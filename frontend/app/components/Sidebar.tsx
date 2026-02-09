@@ -43,7 +43,7 @@ function IconButton({
         ${
           active
             ? 'bg-white text-black'
-            : 'text-white hover:bg-white/10'
+            : 'text-white hover:bg-white/10 hover:cursor-pointer'
         }`}
     >
       {icon}
