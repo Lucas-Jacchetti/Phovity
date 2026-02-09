@@ -9,13 +9,13 @@ export default function LoginPage() {
 
   return (
     
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      {/* <Image
-      src="/fundo.jpg"
-      fill={true}
-      className='absolute inset-0 w-full h-full object-cover -z-10'
-      alt="Fundo"
-      /> */}
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <Image
+        src="/fundo.jpg"
+        fill={true}
+        className='absolute inset-0 w-full h-full object-cover -z-10'
+        alt="Fundo"
+      />
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         <h1 className="text-3xl font-bold text-center text-black">Phovity</h1>
         <p className="text-center text-gray-500 mt-1">
