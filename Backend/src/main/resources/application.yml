@@ -14,3 +14,8 @@ spring:
     show-sql: false
   flyway:
     enabled: true
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+        - file:uploads/

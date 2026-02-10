@@ -1,24 +1,45 @@
 'use client'
 
-const images = [
-    '/1.png',
-    '/2.png',
-    '/3.png',
-    '/4.png',
-    '/5.png',
-    '/6.png',
-    '/7.png',
-    '/8.png',
-];
+import { useEffect, useState } from 'react'
 
-export default function Masonry(){
-    return(
-        <div className="columns-2 sm:columns-3 lg:columns-5 py-10 md:py-20 gap-4">
-            {images.map((src, index) => (
-                <div key={index} className="mb-4 breake-inside-avoid">
-                    <img src={src} className="w-full object-cover rounded-lg"/>
-                </div>
-            ))}
+const API_URL = 'http://localhost:8080'
+
+export default function Feed() {
+  const [posts, setPosts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  async function fetchPosts() {
+      try {
+        const res = await fetch(`${API_URL}/posts`)
+        const data = await res.json()
+
+        setPosts(data)
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+  useEffect(() => {
+    fetchPosts()
+  }, [])
+
+  if (loading) {
+    return <p className="text-center py-10">Carregando imagens...</p>
+  }
+
+  return (
+    <div className="columns-2 sm:columns-3 lg:columns-5 gap-4 py-10">
+      {posts.map(post => (
+        <div key={post.id} className="mb-4 break-inside-avoid">
+          <img
+            src={`${API_URL}${post.postImgUrl}`}
+            alt="Post"
+            className="w-full rounded-lg object-cover"
+          />
         </div>
-    )
+      ))}
+    </div>
+  )
 }
