@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucasjacc.dev.dto.user.UserCreateDto;
+import com.lucasjacc.dev.jwt.TokenService;
 import com.lucasjacc.dev.mapper.UserMapper;
 import com.lucasjacc.dev.model.User;
 import com.lucasjacc.dev.repository.UserRepository;
@@ -21,21 +22,27 @@ import com.lucasjacc.dev.repository.UserRepository;
 public class AuthController {
     @Autowired
     private UserRepository repository;
+
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private TokenService tokenService;
     
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Validated AuthDto data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDto(token));
     }
 
     
     @PostMapping("/register")
 public ResponseEntity register(@RequestBody @Validated UserCreateDto data){
-    if (repository.findByEmail(data.getEmail()).isPresent()) {
+    if (repository.findByEmail(data.getEmail()) != null) {
         return ResponseEntity.badRequest().build();
     }
     
