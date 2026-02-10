@@ -11,7 +11,6 @@ public class UserMapper {
         UserResponseDto dto = new UserResponseDto();
         dto.setId(user.getId());
         dto.setBio(user.getBio());
-        dto.setName(user.getName());
         dto.setUserName(user.getUserName());
         dto.setEmail(user.getEmail());
         dto.setProfileImgUrl(user.getProfileImgUrl());
@@ -24,15 +23,14 @@ public class UserMapper {
         dto.setId(user.getId());
         dto.setUsername(user.getUserName());
         dto.setProfileImageUrl(user.getProfileImgUrl());
-        dto.setUsername(user.getName());
         return dto;
     }
 
     public static User toEntity(UserCreateDto dto){
         User user = new User();
-        user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setUserName(dto.getUserName());
+        user.setPassword(dto.getPassword());
         return user;
     }
 }

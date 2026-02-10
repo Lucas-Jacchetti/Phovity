@@ -5,12 +5,9 @@ import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lucasjacc.dev.dto.user.UserCreateDto;
 import com.lucasjacc.dev.dto.user.UserResponseDto;
 import com.lucasjacc.dev.service.UserService;
 
@@ -33,10 +30,10 @@ public class UserController {
         return service.getAll();
     }
 
-    @PostMapping
-    public UserResponseDto create(@RequestBody UserCreateDto dto){
-        return service.create(dto);
-    }
+    // @PostMapping
+    // public UserResponseDto create(@RequestBody UserCreateDto dto){
+    //     return service.create(dto);
+    // }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){

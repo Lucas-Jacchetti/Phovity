@@ -1,7 +1,11 @@
 package com.lucasjacc.dev.model;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,12 +26,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_table")
-public class User {
+public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
     private String userName;
     private String password;
     @Column(unique = true)
@@ -46,8 +49,31 @@ public class User {
     private List<Like> likes;
 
 
+    public String getUserName(){
+        return userName;
+    }
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+    @Override
+    public boolean isEnabled() { return true; }
 }
