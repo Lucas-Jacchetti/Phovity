@@ -1,6 +1,6 @@
 'use client'
 
-import { Mail, Eye, EyeOff } from 'lucide-react'
+import { Mail, Eye, EyeOff, User } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -19,7 +19,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         <h1 className="text-3xl font-bold text-center text-black">Phovity</h1>
         <p className="text-center text-gray-500 mt-1">
-          Entre na sua conta
+          Cadastre sua conta
         </p>
 
         <form className="mt-8 space-y-5">
@@ -59,28 +59,28 @@ export default function LoginPage() {
                 )}
               </button>
             </div>
+          </div>
 
-            <div className="text-right mt-2">
-              <a href="#" className="text-sm text-gray-500 hover:underline">
-                Esqueci minha senha
-              </a>
+          <div className='mb-10'>
+            <label className="block text-sm font-medium mb-1 text-black">
+              Nome de usuário
+            </label>
+            <div className="relative">
+              <input
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 text-black focus:ring-black"
+                placeholder='seu_nome'
+              />
+              <User className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"/>
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-black text-white py-2.5 rounded-lg font-medium hover:opacity-90 transition"
+            className="w-full bg-black text-white py-2.5 rounded-lg font-medium hover:opacity-90 transition hover:cursor-pointer"
           >
-            Entrar
+            Cadastrar
           </button>
         </form>
-
-        <p className="text-center text-sm text-gray-500 mt-6">
-          Não tem uma conta?{' '}
-          <a href="#" className="text-black font-medium hover:underline">
-            Cadastre-se
-          </a>
-        </p>
 
         <div className="flex items-center gap-3 my-6">
           <div className="h-px bg-gray-200 flex-1" />
