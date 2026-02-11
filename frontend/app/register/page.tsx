@@ -4,6 +4,8 @@ import { Mail, Eye, EyeOff, User } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -11,6 +13,8 @@ export default function LoginPage() {
   const [email, setEmail] =  useState("");
   const [password, setPassword] =  useState("");
   const [responseMessage, setResponseMessage] = useState("");
+
+  const router = useRouter();
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -24,7 +28,7 @@ export default function LoginPage() {
     axios
         .post("http://localhost:8080/auth/register", newRegister)
         .then((response) => {
-          setResponseMessage("Cadastrado!");
+          setResponseMessage(" Faça seu login");
         })
         .catch((err) => {
           if (err.response) {
@@ -119,7 +123,7 @@ export default function LoginPage() {
           </button>
         </form>
         <div className='text-black flex mt-5 w-full items-center justify-center'>
-          {responseMessage && <p className='items-center justify-center'>{responseMessage}</p>}
+          {responseMessage && <div className='flex flex-row gap-1'><p>Cadastrado!</p><Link className='items-center justify-cente underline' href="login">{responseMessage}</Link></div>}
         </div>
         
         <div className="flex items-center gap-3 my-6">

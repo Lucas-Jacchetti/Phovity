@@ -4,6 +4,8 @@ import axios from 'axios'
 import { Mail, Eye, EyeOff } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -11,6 +13,8 @@ export default function LoginPage() {
   const[email, setEmail] = useState("");
   const[password, setPassword] = useState("");
   const[responseMessage, setResponseMessage] = useState("");
+
+  const router = useRouter();
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -23,10 +27,9 @@ export default function LoginPage() {
     axios
         .post("http://localhost:8080/auth/login", newLogin)
         .then(response => {
-          
           const token = response.data.token;
           localStorage.setItem("token", token);
-          setResponseMessage("Logado!");
+          router.push("/explore");
         })
         .catch((err) => {
           if (err.response) {
@@ -106,7 +109,7 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-black text-white py-2.5 rounded-lg font-medium hover:opacity-90 transition"
+            className="w-full bg-black text-white py-2.5 rounded-lg font-medium hover:opacity-90 transition hover:cursor-pointer"
           >
             Entrar
           </button>
@@ -117,9 +120,9 @@ export default function LoginPage() {
         </div>
         <p className="text-center text-sm text-gray-500 mt-6">
           Não tem uma conta?{' '}
-          <a href="#" className="text-black font-medium hover:underline">
+          <Link href="/register" className="text-black font-medium hover:underline">
             Cadastre-se
-          </a>
+          </Link>
         </p>
 
         <div className="flex items-center gap-3 my-6">
