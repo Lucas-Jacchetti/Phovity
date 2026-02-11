@@ -1,25 +1,22 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-
-const API_URL = 'http://localhost:8080'
+import { api } from '../services/apiService'
 
 export default function Feed() {
   const [posts, setPosts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
-  async function fetchPosts() {
-      try {
-        const res = await fetch(`${API_URL}/posts`)
-        const data = await res.json()
-
-        setPosts(data)
-      } catch (err) {
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
+   async function fetchPosts() {
+    try {
+      const response = await api.get('/posts')
+      setPosts(response.data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
     }
+  }
 
   useEffect(() => {
     fetchPosts()
@@ -34,7 +31,7 @@ export default function Feed() {
       {posts.map(post => (
         <div key={post.id} className="mb-4 break-inside-avoid">
           <img
-            src={`${API_URL}${post.postImgUrl}`}
+            src={`"http://localhost:8080"${post.postImgUrl}`}
             alt="Post"
             className="w-full rounded-lg object-cover"
           />

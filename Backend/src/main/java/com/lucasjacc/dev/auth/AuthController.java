@@ -1,6 +1,8 @@
 package com.lucasjacc.dev.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,7 +38,17 @@ public class AuthController {
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
-        return ResponseEntity.ok(new LoginResponseDto(token));
+        ResponseCookie cookie = ResponseCookie.from("token", token)
+            .httpOnly(true)
+            .secure(false) //mudar pra true em producao
+            .path("/")
+            .maxAge(60 * 60 * 2)
+            .sameSite("Lax")
+            .build();
+
+            return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .build();
     }
 
     

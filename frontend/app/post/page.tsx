@@ -14,7 +14,6 @@ export default function CreatePostView() {
         </p>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {/* Coluna esquerda */}
           <div className="space-y-6 md:col-span-2">
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">

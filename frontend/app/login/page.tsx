@@ -16,31 +16,19 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     const newLogin = {
-      email,
-      password
+      email, password
     }
 
-    axios
-        .post("http://localhost:8080/auth/login", newLogin)
-        .then(response => {
-          const token = response.data.token;
-          localStorage.setItem("token", token);
-          router.push("/explore");
-        })
-        .catch((err) => {
-          if (err.response) {
-            console.log("Response error:", err.response);
-          } else if (err.request) {
-            console.log("Request error:", err.request);
-          } else {
-            console.log("Error:", err.message);
-          }
-          setResponseMessage("Houve um problema no login");
-        });
+    try{
+      await axios.post("http://localhost:8080/auth/login", newLogin, { withCredentials: true })
+      router.push("/explore");
+    }catch(error){
+      setResponseMessage("Houve um problema no login");
+    };
   }
 
   return (
