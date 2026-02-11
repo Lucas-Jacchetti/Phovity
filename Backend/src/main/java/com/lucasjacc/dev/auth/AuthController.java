@@ -41,15 +41,15 @@ public class AuthController {
 
     
     @PostMapping("/register")
-public ResponseEntity register(@RequestBody @Validated UserCreateDto data){
-    if (repository.findByEmail(data.getEmail()) != null) {
-        return ResponseEntity.badRequest().build();
-    }
-    
-    data.setPassword(new BCryptPasswordEncoder().encode(data.getPassword()));
-    User user = UserMapper.toEntity(data);
-    repository.save(user);
+    public ResponseEntity register(@RequestBody @Validated UserCreateDto data){
+        if (repository.findByEmail(data.getEmail()) != null) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        data.setPassword(new BCryptPasswordEncoder().encode(data.getPassword()));
+        User user = UserMapper.toEntity(data);
+        repository.save(user);
 
-    return ResponseEntity.ok().build();
-}
+        return ResponseEntity.ok().build();
+    }
 }

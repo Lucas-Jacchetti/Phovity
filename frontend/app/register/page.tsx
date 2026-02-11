@@ -3,9 +3,40 @@
 import { Mail, Eye, EyeOff, User } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
+import axios from 'axios'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] =  useState("");
+  const [password, setPassword] =  useState("");
+  const [responseMessage, setResponseMessage] = useState("");
+
+  const handleSubmit = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    
+    const newRegister ={
+      email,
+      password,
+      userName
+    };
+
+    axios
+        .post("http://localhost:8080/auth/register", newRegister)
+        .then((response) => {
+          setResponseMessage("Cadastrado!");
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log("Response error:", err.response);
+          } else if (err.request) {
+            console.log("Request error:", err.request);
+          } else {
+            console.log("Error:", err.message);
+          }
+          setResponseMessage("Houve um problema no cadastro");
+        });
+  }
 
   return (
     
@@ -22,7 +53,7 @@ export default function LoginPage() {
           Cadastre sua conta
         </p>
 
-        <form className="mt-8 space-y-5">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div>
             <p className="block text-sm font-medium mb-1 text-black">
               Email
@@ -30,6 +61,8 @@ export default function LoginPage() {
             <div className="relative">
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="seu@email.com"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-black text-black"
               />
@@ -43,6 +76,8 @@ export default function LoginPage() {
             </label>
             <div className="relative">
               <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 text-black focus:ring-black"
@@ -67,6 +102,8 @@ export default function LoginPage() {
             </label>
             <div className="relative">
               <input
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 text-black focus:ring-black"
                 placeholder='seu_nome'
               />
@@ -81,7 +118,10 @@ export default function LoginPage() {
             Cadastrar
           </button>
         </form>
-
+        <div className='text-black flex mt-5 w-full items-center justify-center'>
+          {responseMessage && <p className='items-center justify-center'>{responseMessage}</p>}
+        </div>
+        
         <div className="flex items-center gap-3 my-6">
           <div className="h-px bg-gray-200 flex-1" />
           <div className="h-px bg-gray-200 flex-1" />
@@ -90,22 +130,5 @@ export default function LoginPage() {
         
       </div>
     </div>
-  )
-}
-
-function SocialButton({
-  children,
-  label,
-}: {
-  children: React.ReactNode
-  label: string
-}) {
-  return (
-    <button
-      aria-label={label}
-      className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center text-lg hover:bg-gray-200 transition"
-    >
-      {children}
-    </button>
   )
 }

@@ -93,19 +93,4 @@ export default function LoginPage() {
   )
 }
 
-function SocialButton({
-  children,
-  label,
-}: {
-  children: React.ReactNode
-  label: string
-}) {
-  return (
-    <button
-      aria-label={label}
-      className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center text-lg hover:bg-gray-200 transition"
-    >
-      {children}
-    </button>
-  )
-}
+
