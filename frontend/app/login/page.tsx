@@ -1,11 +1,44 @@
 'use client'
 
+import axios from 'axios'
 import { Mail, Eye, EyeOff } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
+
+  const[email, setEmail] = useState("");
+  const[password, setPassword] = useState("");
+  const[responseMessage, setResponseMessage] = useState("");
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+
+    const newLogin = {
+      email,
+      password
+    }
+
+    axios
+        .post("http://localhost:8080/auth/login", newLogin)
+        .then(response => {
+          
+          const token = response.data.token;
+          localStorage.setItem("token", token);
+          setResponseMessage("Logado!");
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log("Response error:", err.response);
+          } else if (err.request) {
+            console.log("Request error:", err.request);
+          } else {
+            console.log("Error:", err.message);
+          }
+          setResponseMessage("Houve um problema no login");
+        });
+  }
 
   return (
     
@@ -22,7 +55,7 @@ export default function LoginPage() {
           Entre na sua conta
         </p>
 
-        <form className="mt-8 space-y-5">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div>
             <p className="block text-sm font-medium mb-1 text-black">
               Email
@@ -30,6 +63,8 @@ export default function LoginPage() {
             <div className="relative">
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="seu@email.com"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-black text-black"
               />
@@ -44,6 +79,8 @@ export default function LoginPage() {
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 text-black focus:ring-black"
               />
@@ -73,8 +110,11 @@ export default function LoginPage() {
           >
             Entrar
           </button>
+          
         </form>
-
+        <div className='text-black flex mt-5 w-full items-center justify-center'>
+          {responseMessage && <p className='items-center justify-center'>{responseMessage}</p>}
+        </div>
         <p className="text-center text-sm text-gray-500 mt-6">
           Não tem uma conta?{' '}
           <a href="#" className="text-black font-medium hover:underline">
