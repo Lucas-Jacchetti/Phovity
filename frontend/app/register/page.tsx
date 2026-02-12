@@ -3,9 +3,9 @@
 import { Mail, Eye, EyeOff, User } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { api } from '../services/apiService'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -16,7 +16,7 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     
     const newRegister ={
@@ -25,21 +25,14 @@ export default function LoginPage() {
       userName
     };
 
-    axios
-        .post("http://localhost:8080/auth/register", newRegister)
-        .then((response) => {
-          setResponseMessage(" Faça seu login");
-        })
-        .catch((err) => {
-          if (err.response) {
-            console.log("Response error:", err.response);
-          } else if (err.request) {
-            console.log("Request error:", err.request);
-          } else {
-            console.log("Error:", err.message);
-          }
+    try{
+      await api
+        .post("/auth/register", newRegister)
+        setResponseMessage(" Faça seu login");
+      }
+      catch(error){
           setResponseMessage("Houve um problema no cadastro");
-        });
+        };
   }
 
   return (
@@ -123,7 +116,7 @@ export default function LoginPage() {
           </button>
         </form>
         <div className='text-black flex mt-5 w-full items-center justify-center'>
-          {responseMessage && <div className='flex flex-row gap-1'><p>Cadastrado!</p><Link className='items-center justify-cente underline' href="login">{responseMessage}</Link></div>}
+          {responseMessage && <div className='flex flex-row gap-1'><Link className='items-center justify-cente underline' href="login">{responseMessage}</Link></div>}
         </div>
         
         <div className="flex items-center gap-3 my-6">

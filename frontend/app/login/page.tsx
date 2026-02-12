@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { api } from '../services/apiService'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -24,7 +25,7 @@ export default function LoginPage() {
     }
 
     try{
-      await axios.post("http://localhost:8080/auth/login", newLogin, { withCredentials: true })
+      await api.post('/auth/login', newLogin)
       router.push("/explore");
     }catch(error){
       setResponseMessage("Houve um problema no login");
