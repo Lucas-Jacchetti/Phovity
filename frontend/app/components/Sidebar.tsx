@@ -22,8 +22,8 @@ export function Sidebar() {
       <nav className="flex flex-col gap-4 mt-4">
         <IconButton
           icon={<Home size={20} />}
-          active={pathname === '/'}
-          onClick={() => router.push('/')}
+          active={pathname === '/home'}
+          onClick={() => router.push('/home')}
         />
 
         <IconButton

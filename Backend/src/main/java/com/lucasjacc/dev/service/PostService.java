@@ -52,8 +52,7 @@ public class PostService {
                 .toList();
     }
 
-    public PostResponseDto create(PostCreateDto dto, MultipartFile image){
-        User author = userRepository.findById(dto.getAuthorId()).orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado"));   
+    public PostResponseDto create(PostCreateDto dto, MultipartFile image, User author){
         Post post = new Post();
         post.setDescription(dto.getDescription());
         post.setTag(dto.getTag());

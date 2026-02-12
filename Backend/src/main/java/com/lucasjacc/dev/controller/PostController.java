@@ -3,6 +3,7 @@ package com.lucasjacc.dev.controller;
 import java.util.List;
 
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.lucasjacc.dev.dto.post.PostCreateDto;
 import com.lucasjacc.dev.dto.post.PostResponseDto;
+import com.lucasjacc.dev.model.User;
+import com.lucasjacc.dev.repository.UserRepository;
 import com.lucasjacc.dev.service.PostService;
 
 import tools.jackson.databind.ObjectMapper;
@@ -23,8 +26,10 @@ import tools.jackson.databind.ObjectMapper;
 @RequestMapping("/posts")
 public class PostController {
     private PostService service;
-    public PostController(PostService service){
+    private UserRepository repository;
+    public PostController(PostService service, UserRepository repository){
         this.service = service;
+        this.repository = repository;
     }
 
     @GetMapping
@@ -43,11 +48,14 @@ public class PostController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PostResponseDto create(@RequestPart("data") String data, @RequestPart("image") MultipartFile image) throws Exception{
+    public PostResponseDto create(@RequestPart("data") String data, @RequestPart("image") MultipartFile image, Authentication authentication) throws Exception{
         ObjectMapper mapper = new ObjectMapper();
         PostCreateDto dto = mapper.readValue(data, PostCreateDto.class);
 
-        return service.create(dto, image);
+        String email = authentication.getName();
+        User user = (User) repository.findByEmail(email);
+
+        return service.create(dto, image, user);
     }
 
     @DeleteMapping("/{id}")

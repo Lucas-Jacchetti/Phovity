@@ -9,5 +9,4 @@ import lombok.Setter;
 public class PostCreateDto {
     private String description;
     private String tag;
-    private Long authorId;
 }
