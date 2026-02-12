@@ -3,7 +3,6 @@
 import { Mail, Eye, EyeOff, User } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { api } from '../services/apiService'
 
@@ -13,8 +12,6 @@ export default function LoginPage() {
   const [email, setEmail] =  useState("");
   const [password, setPassword] =  useState("");
   const [responseMessage, setResponseMessage] = useState("");
-
-  const router = useRouter();
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -28,7 +25,7 @@ export default function LoginPage() {
     try{
       await api
         .post("/auth/register", newRegister)
-        setResponseMessage(" Faça seu login");
+        setResponseMessage("Cadastrado! Faça seu login");
       }
       catch(error){
           setResponseMessage("Houve um problema no cadastro");
