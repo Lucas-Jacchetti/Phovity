@@ -14,17 +14,14 @@ import com.lucasjacc.dev.model.Post;
 import com.lucasjacc.dev.model.User;
 import com.lucasjacc.dev.repository.LikeRepository;
 import com.lucasjacc.dev.repository.PostRepository;
-import com.lucasjacc.dev.repository.UserRepository;
 
 @Service
 public class PostService {
     private PostRepository repository;
-    private UserRepository userRepository;
     private LikeRepository likeRepository;
     
-    public PostService(PostRepository repository, UserRepository userRepository, LikeRepository likeRepository){
+    public PostService(PostRepository repository, LikeRepository likeRepository){
         this.repository = repository;
-        this.userRepository = userRepository;
         this.likeRepository = likeRepository;
     }
 

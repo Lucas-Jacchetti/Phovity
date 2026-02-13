@@ -113,7 +113,7 @@ export default function LoginPage() {
           </button>
         </form>
         <div className='text-black flex mt-5 w-full items-center justify-center'>
-          {responseMessage && <div className='flex flex-row gap-1'><Link className='items-center justify-cente underline' href="login">{responseMessage}</Link></div>}
+          {responseMessage && <div className='flex flex-row gap-1'><Link className='items-center justify-center underline' href="login">{responseMessage}</Link></div>}
         </div>
         
         <div className="flex items-center gap-3 my-6">

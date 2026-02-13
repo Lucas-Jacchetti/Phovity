@@ -77,7 +77,7 @@ export default function CreatePostView() {
               <input
                 type="text"
                 className="w-full text-black rounded-lg border border-gray-300 p-3 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
-                placeholder="Ex: tecnologia, design, marketing..."
+                placeholder="Ex: Natureza, Esportes, Fotografia de rua..."
                 value={tag}
                 onChange={(e) => setTag(e.target.value)}
               />
