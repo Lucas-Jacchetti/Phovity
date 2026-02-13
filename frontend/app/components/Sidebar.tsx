@@ -7,6 +7,7 @@ import {
   Bell,
   Bookmark,
   Settings,
+  User
 } from 'lucide-react'
 
 import { useRouter, usePathname } from 'next/navigation'
@@ -57,8 +58,12 @@ export function Sidebar() {
           active={pathname.startsWith('/settings')}
           onClick={() => router.push('/settings')}
         />
-
-        <div className="w-8 h-8 rounded-full bg-gray-300" />
+        
+        <IconButton
+          icon={<User size={20} />}
+          active={pathname.startsWith('/profile')}
+          onClick={() => router.push('/profile')}
+        />
       </div>
     </aside>
   )
