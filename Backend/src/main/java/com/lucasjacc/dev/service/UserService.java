@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import com.lucasjacc.dev.dto.user.UserResponseDto;
+import com.lucasjacc.dev.dto.user.UserUpdateDto;
 import com.lucasjacc.dev.mapper.UserMapper;
 import com.lucasjacc.dev.model.User;
 import com.lucasjacc.dev.repository.UserRepository;
@@ -28,5 +29,14 @@ public class UserService {
 
     public void deleteUser(Long id){
         repository.deleteById(id);
+    }
+
+    public UserResponseDto updateUser(Long id, UserUpdateDto dto) {
+        User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        user.setBio(dto.getBio());
+        user.setUserName(dto.getUserName());
+        user.setProfileImgUrl(dto.getProfileImgUrl());
+        repository.save(user);
+        return UserMapper.toResponse(user);
     }
 }

@@ -9,10 +9,8 @@ public class UserMapper {
     
     public static UserResponseDto toResponse(User user){
         UserResponseDto dto = new UserResponseDto();
-        dto.setId(user.getId());
         dto.setBio(user.getBio());
         dto.setUserName(user.getUserName());
-        dto.setEmail(user.getEmail());
         dto.setProfileImgUrl(user.getProfileImgUrl());
         dto.setCreatedAt(user.getCreatedAt().toString());
         return dto;
