@@ -14,15 +14,18 @@ import com.lucasjacc.dev.model.Post;
 import com.lucasjacc.dev.model.User;
 import com.lucasjacc.dev.repository.LikeRepository;
 import com.lucasjacc.dev.repository.PostRepository;
+import com.lucasjacc.dev.repository.UserRepository;
 
 @Service
 public class PostService {
     private PostRepository repository;
     private LikeRepository likeRepository;
+    private UserRepository userRepository;
     
-    public PostService(PostRepository repository, LikeRepository likeRepository){
+    public PostService(PostRepository repository, LikeRepository likeRepository, UserRepository userRepository){
         this.repository = repository;
         this.likeRepository = likeRepository;
+        this.userRepository = userRepository;
     }
 
     public List<PostResponseDto> getAll(){
@@ -43,6 +46,10 @@ public class PostService {
     }
 
     public List<PostResponseDto> getByUser(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("Usuário não encontrado");
+        }
+
         return repository.findByAuthorId(userId)    
                 .stream()
                 .map(PostMapper::toResponse)

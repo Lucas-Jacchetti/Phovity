@@ -9,7 +9,7 @@ export default function Feed() {
 
   async function fetchPosts() {
     try {
-      const response = await api.get('/posts')
+      const response = await api.get('/posts/user/me')
       setPosts(response.data)
     } catch (error) {
       console.error(error)
@@ -27,7 +27,7 @@ export default function Feed() {
   }
 
   return (
-    <div className="columns-2 sm:columns-3 lg:columns-4 gap-5 py-10">
+    <div className="columns-2 sm:columns-3 lg:columns-4 gap-4 py-10">
       {posts.map(post => (
         <div key={post.id} className="mb-4 break-inside-avoid">
           <img

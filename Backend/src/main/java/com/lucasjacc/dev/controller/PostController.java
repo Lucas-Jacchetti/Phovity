@@ -42,9 +42,15 @@ public class PostController {
         return service.getPost(id, userId);
     }
 
-    @GetMapping("/user/{authorId}")
-    public List<PostResponseDto> getPostByUser(@PathVariable Long authorId){
-        return service.getByUser(authorId);
+    @GetMapping("/user/me")
+    public List<PostResponseDto> getPostByUser(Authentication auth){
+        String email = auth.getName();
+        User user = (User) repository.findByEmail(email);
+        
+        if (user == null) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
+        return service.getByUser(user.getId());
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

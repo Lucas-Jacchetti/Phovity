@@ -20,7 +20,7 @@ export default function FeedPage() {
             <SearchBar/>
           </div>
         </div>
-        <div className='ml-22 mr-5'>
+        <div className='ml-[4%] mr-[2%]'>
           <Masonry/>
         </div>
       </div>
