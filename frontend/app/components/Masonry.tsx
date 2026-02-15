@@ -2,10 +2,14 @@
 
 import { useEffect, useState } from 'react'
 import { api } from '../services/apiService'
+import OpenPost from './OpenPost'
+
+
 
 export default function Feed() {
   const [posts, setPosts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedPost, setSelectedPost] = useState<any | null>(null)
 
   async function fetchPosts() {
     try {
@@ -18,6 +22,7 @@ export default function Feed() {
     }
   }
 
+
   useEffect(() => {
     fetchPosts()
   }, [])
@@ -27,16 +32,19 @@ export default function Feed() {
   }
 
   return (
+    
     <div className="columns-2 sm:columns-3 lg:columns-4 gap-5 py-10">
       {posts.map(post => (
         <div key={post.id} className="mb-4 break-inside-avoid">
           <img
+            onClick={() => setSelectedPost(post)}
             src={`http://localhost:8080${post.postImgUrl}`}
             alt="Post"
-            className="w-full rounded-lg object-cover"
+            className="w-full rounded-lg object-cover hover:cursor-pointer"
           />
         </div>
       ))}
-    </div>
+      {selectedPost && <OpenPost post={selectedPost} onClose={() => setSelectedPost(null)}/>}
+    </div>  
   )
 }

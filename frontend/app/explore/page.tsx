@@ -16,7 +16,7 @@ export default function FeedPage() {
               </p>
             </header>
           </main>
-          <div className='mr-70'>
+          <div className='ml-70 absolute'>
             <SearchBar/>
           </div>
         </div>
