@@ -13,35 +13,31 @@ import com.lucasjacc.dev.model.Post;
 import com.lucasjacc.dev.model.User;
 import com.lucasjacc.dev.repository.LikeRepository;
 import com.lucasjacc.dev.repository.PostRepository;
-import com.lucasjacc.dev.repository.UserRepository;
 
 @Service
 public class LikeService {
     private final LikeRepository repository;
-    private final UserRepository userRepository;
     private final PostRepository postRepository;
     
-    public LikeService(LikeRepository repository, UserRepository userRepository, PostRepository postRepository){
+    public LikeService(LikeRepository repository, PostRepository postRepository){
         this.repository = repository;
-        this.userRepository = userRepository;
         this.postRepository = postRepository;
     }
 
-    public LikeResponseDto toggleLike(LikeCreateDto dto){
-        User author = userRepository.findById(dto.getAuthorId()).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+    public LikeResponseDto toggleLike(LikeCreateDto dto, User user){
 
         boolean liked;
         long likeCount;
 
         Post post = postRepository.findById(dto.getPostId()).orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
 
-        Optional<Like> exists = repository.findByAuthorIdAndPostId(dto.getAuthorId(),dto.getPostId());
+        Optional<Like> exists = repository.findByAuthorIdAndPostId(user.getId(),dto.getPostId());
         if (exists.isPresent()) {
             repository.delete(exists.get());
             liked = false;
         }else {
             Like like = new Like();
-            like.setAuthor(author);
+            like.setAuthor(user);
             like.setPost(post);
             repository.save(like);
             liked = true;

@@ -14,6 +14,20 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
     const [like, setLike] = useState(false);
     const [likeCount, setLikecount] = useState(0);
 
+    const handleLike = async (event: { preventDefault: () => void }) => {
+        event.preventDefault()
+        const newLike = {
+            postId: post.id,
+        }
+        try {
+            const respose = await api.post("/likes", newLike)
+            setLikecount(respose.data.likeCount)
+            setLike(respose.data.liked)
+        } catch (error) {
+            
+        }
+    }
+
     const handleComment = async (event: { preventDefault: () => void }) => {
         event.preventDefault()
         const newComment = {
@@ -33,7 +47,6 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
         async function fetchComments() {
             try {
                 const response = await api.get(`/comments/post/${post.id}`)
-                console.log(response.data)
                 setComments(response.data)
             } catch (error) {
                 console.log(error)
@@ -86,7 +99,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
           <div className="border-t border-t-gray-500 p-5 space-y-4">
 
             <div className="flex items-center gap-2 text-xl">
-              <button className="hover:scale-110 transition">♥️</button>
+              <button onClick={handleLike} className="hover:scale-110 transition">♥️</button>
               <div className="text-sm font-semibold">{likeCount && <div>{likeCount}</div>}</div>
             </div>
 
