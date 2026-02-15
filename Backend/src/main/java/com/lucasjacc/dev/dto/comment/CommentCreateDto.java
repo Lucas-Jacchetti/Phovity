@@ -7,6 +7,5 @@ import lombok.Setter;
 @Setter
 public class CommentCreateDto {
     private String text;
-    private Long authorId;
     private Long postId;
 }

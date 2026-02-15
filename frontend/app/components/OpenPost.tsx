@@ -1,11 +1,47 @@
 'use client'
 
+import { useState, useEffect } from "react"
+import { api } from "../services/apiService"
+
 type OpenPostProps = {
   post: any
   onClose: () => void
 }
 
 export default function OpenPost({post, onClose} : OpenPostProps) {
+    const [comments, setComments] = useState<any[]>([])
+    const [comment, setComment] = useState("");
+    const [like, setLike] = useState(false);
+    const [likeCount, setLikecount] = useState(0);
+
+    const handleComment = async (event: { preventDefault: () => void }) => {
+        event.preventDefault()
+        const newComment = {
+          text: comment,
+          postId: post.id,
+        }
+        try {
+            await api.post("/comments", newComment);
+            const response = await api.get(`/comments/post/${post.id}`)
+            setComments(response.data)
+            setComment("")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        async function fetchComments() {
+            try {
+                const response = await api.get(`/comments/post/${post.id}`)
+                console.log(response.data)
+                setComments(response.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchComments()
+    }, [post.id])
+    
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 text-black">
 
@@ -24,7 +60,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
           <div className="p-5 border-b border-b-gray-500 flex justify-between items-center">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 bg-gray-300 rounded-full"></div>
-              <span className="font-semibold">{post.userName || 'username'}</span>
+              <span className="font-semibold">{post.author?.username || 'username'}</span>
             </div>
 
             <button onClick={onClose} className="text-gray-500 hover:text-black text-xl hover:cursor-pointer">
@@ -33,33 +69,35 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
           </div>
 
           <div className="flex-1 overflow-y-auto p-5 space-y-4">
-            <div className="text-sm">
-              <span className="font-semibold">username</span> Comentário exemplo.
-            </div>
-
-            <div className="text-sm">
-              <span className="font-semibold">user2</span> Outro comentário aqui.
-            </div>
-
-            <div className="text-sm">
-              <span className="font-semibold">user3</span> Mais um comentário.
-            </div>
-          </div>
+            {comments.length === 0 ? (
+                <p className="text-sm text-gray-500">
+                Nenhum comentário ainda.
+                </p>
+            ) : (
+                comments.map((c) => (
+                <div key={c.id} className="text-sm">
+                    <span className="font-semibold">{c.author?.username}</span>{" "}
+                    {c.text}
+                </div>
+                ))
+            )}
+           </div>
 
           <div className="border-t border-t-gray-500 p-5 space-y-4">
 
             <div className="flex items-center gap-2 text-xl">
               <button className="hover:scale-110 transition">♥️</button>
-              <div className="text-sm font-semibold">128 curtidas</div>
+              <div className="text-sm font-semibold">{likeCount && <div>{likeCount}</div>}</div>
             </div>
 
             <div className="flex gap-3">
               <input
+                value={comment} onChange={(e) => setComment(e.target.value)}
                 type="text"
                 placeholder="Adicione um comentário..."
                 className="flex-1 border rounded-lg px-4 py-2 text-sm outline-none"
               />
-              <button className="text-black bg-blue-400 font-semibold rounded-lg hover:cursor-pointer">
+              <button className="text-black bg-blue-400 font-semibold rounded-lg hover:cursor-pointer" onClick={handleComment}>
                 <p className="p-3">Publicar</p>
               </button>
             </div>
