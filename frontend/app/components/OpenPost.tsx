@@ -136,7 +136,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
           <div className="border-t border-t-gray-500 p-5 space-y-4">
 
             <div className="flex items-center gap-2 text-xl">
-              <button onClick={handleLike} className="hover:scale-110 transition">♥️</button>
+              <button onClick={handleLike} className="hover:scale-110 transition hover:cursor-pointer">♥️</button>
               <div className="text-sm font-semibold">{likeCount}</div>
               <div className="ml-5 text-[15px]">{post.tag && '#' + post.tag}</div>
             </div>
