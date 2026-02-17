@@ -15,6 +15,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
     const [comment, setComment] = useState("");
     const [like, setLike] = useState(false);
     const [likeCount, setLikecount] = useState(0);
+    
 
     const handleLike = async (event: { preventDefault: () => void }) => {
         event.preventDefault()
@@ -91,12 +92,13 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
 
       <div className="bg-white w-[95%] max-w-5xl h-[85%] rounded-2xl flex overflow-hidden shadow-2xl ">
 
-        <div className="w-1/2 bg-gray-100 flex items-center justify-center">
+        <div className="w-1/2 bg-gray-100 flex flex-col items-center justify-center">
           <img
             src={`http://localhost:8080${post.postImgUrl}`}
             alt="Post"
-            className="max-h-full object-contain"
+            className="max-h-full object-contain p-3"
           />
+          <div className="mt-5">{post.description || ''}</div>
         </div>
 
         <div className="w-1/2 flex flex-col">
@@ -132,6 +134,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
             <div className="flex items-center gap-2 text-xl">
               <button onClick={handleLike} className="hover:scale-110 transition">♥️</button>
               <div className="text-sm font-semibold">{likeCount}</div>
+              <div className="ml-5 text-[15px]">{post.tag && '#' + post.tag}</div>
             </div>
 
             <div className="flex gap-3">
