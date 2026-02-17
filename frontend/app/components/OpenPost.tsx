@@ -45,6 +45,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
             console.log(error)
         }
     }
+
     useEffect(() => {
       const socket = new SockJS("http://localhost:8080/ws")
 
@@ -64,6 +65,25 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
       return () => {
         client.deactivate()
       }
+    }, [post.id])
+
+    useEffect(() => {
+      async function fetchComments() {
+        const response = await api.get(`/comments/post/${post.id}`)
+        setComments(response.data)
+      }
+
+      fetchComments()
+    }, [post.id])
+
+    useEffect(() => {
+      async function fetchPostData() {
+        const response = await api.get(`/posts/${post.id}`)
+        setLikecount(response.data.likeCount)
+        setLike(response.data.likedByMe)
+      }
+
+      fetchPostData()
     }, [post.id])
     
   return (

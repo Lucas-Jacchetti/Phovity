@@ -38,8 +38,10 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public PostResponseDto getPost(@PathVariable Long id, @RequestParam Long userId){
-        return service.getPost(id, userId);
+    public PostResponseDto getPost(@PathVariable Long id, Authentication authentication){
+        String email = authentication.getName();
+        User user = (User) repository.findByEmail(email);
+        return service.getPost(id, user.getId());
     }
 
     @GetMapping("/user/me")
