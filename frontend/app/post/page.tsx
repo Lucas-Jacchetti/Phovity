@@ -44,6 +44,13 @@ export default function CreatePostView() {
     }
   }
 
+  const handleCancel = () => {
+    setTag("")
+    setDescripion("")
+    setImage(null)
+    setResponseMessage("")
+  }
+
   return (
     <div className="w-full">
      <Sidebar/>
@@ -91,6 +98,7 @@ export default function CreatePostView() {
                 Publicar Post
               </button>
               <button
+                onClick={handleCancel}
                 type="button"
                 className="rounded-lg bg-gray-200 px-6 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 hover:cursor-pointer"
               >
