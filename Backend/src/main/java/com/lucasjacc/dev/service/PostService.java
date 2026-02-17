@@ -32,11 +32,11 @@ public class PostService {
         return repository.findAll().stream().map(PostMapper::toResponse).toList();
     }
 
-    public PostResponseDto getPost(Long id, Long postId){
-        Post post = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
+    public PostResponseDto getPost(Long postId, Long userId){
+        Post post = repository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
 
         long countLikes = likeRepository.countByPostId(postId);
-        boolean likedByMe = likeRepository.existsByPostIdAndAuthorId(id, postId);
+        boolean likedByMe = likeRepository.existsByPostIdAndAuthorId(postId, userId);
 
         PostResponseDto dto = PostMapper.toResponse(post);
         dto.setLikeCount(countLikes);

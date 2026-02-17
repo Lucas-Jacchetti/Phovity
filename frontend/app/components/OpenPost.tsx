@@ -86,6 +86,10 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
 
       fetchPostData()
     }, [post.id])
+
+    useEffect(() => {
+      console.log("Post aberto:", post.likeCount)
+    }, [post])
     
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 text-black">
