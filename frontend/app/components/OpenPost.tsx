@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { api } from "../services/apiService"
+import { Client } from "@stomp/stompjs"
+import SockJS from "sockjs-client"
 
 type OpenPostProps = {
   post: any
@@ -44,15 +46,24 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
         }
     }
     useEffect(() => {
-        async function fetchComments() {
-            try {
-                const response = await api.get(`/comments/post/${post.id}`)
-                setComments(response.data)
-            } catch (error) {
-                console.log(error)
-            }
+      const socket = new SockJS("http://localhost:8080/ws")
+
+      const client = new Client({
+        webSocketFactory: () => socket,
+        onConnect: () => {
+          client.subscribe(`/topic/likes/${post.id}`, (message) => {
+            const data = JSON.parse(message.body)
+            setLikecount(data.likeCount)
+            setLike(data.liked)
+          })
         }
-        fetchComments()
+      })
+
+      client.activate()
+
+      return () => {
+        client.deactivate()
+      }
     }, [post.id])
     
   return (
@@ -100,7 +111,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
 
             <div className="flex items-center gap-2 text-xl">
               <button onClick={handleLike} className="hover:scale-110 transition">♥️</button>
-              <div className="text-sm font-semibold">{likeCount && <div>{likeCount}</div>}</div>
+              <div className="text-sm font-semibold">{likeCount}</div>
             </div>
 
             <div className="flex gap-3">

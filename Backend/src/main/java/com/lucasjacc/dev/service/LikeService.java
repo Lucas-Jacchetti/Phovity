@@ -2,6 +2,7 @@ package com.lucasjacc.dev.service;
 
 import java.util.Optional;
 
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.lucasjacc.dev.dto.like.LikeCreateDto;
@@ -18,10 +19,13 @@ import com.lucasjacc.dev.repository.PostRepository;
 public class LikeService {
     private final LikeRepository repository;
     private final PostRepository postRepository;
+    private final SimpMessagingTemplate messagingTemplate;
+
     
-    public LikeService(LikeRepository repository, PostRepository postRepository){
+    public LikeService(LikeRepository repository, PostRepository postRepository, SimpMessagingTemplate messagingTemplate){
         this.repository = repository;
         this.postRepository = postRepository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     public LikeResponseDto toggleLike(LikeCreateDto dto, User user){
@@ -45,7 +49,14 @@ public class LikeService {
         
         likeCount = repository.countByPostId(dto.getPostId());
 
-        return LikeMapper.toResponse(liked, likeCount);
+        LikeResponseDto response = LikeMapper.toResponse(liked, likeCount);
+
+        messagingTemplate.convertAndSend(
+            "/topic/likes/" + dto.getPostId(),
+            response
+        );
+
+        return response;
     }
 
    
