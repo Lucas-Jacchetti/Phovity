@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --dark-mode: class;
+}
+
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
