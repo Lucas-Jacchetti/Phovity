@@ -17,7 +17,7 @@ public class PostResponseDto {
     private String tag;
     private Long likeCount;
     private Boolean likedByMe;
-    private Boolean saved;
+    private Boolean savedByMe;
 
     private UserSummaryDto author;
 

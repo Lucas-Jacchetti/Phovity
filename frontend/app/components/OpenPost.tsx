@@ -94,6 +94,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
         const response = await api.get(`/posts/${post.id}`)
         setLikecount(response.data.likeCount)
         setLike(response.data.likedByMe)
+        setSaved(response.data.savedByMe)
       }
 
       fetchPostData()

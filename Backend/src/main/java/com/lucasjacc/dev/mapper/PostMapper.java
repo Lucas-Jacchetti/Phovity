@@ -17,7 +17,6 @@ public class PostMapper {
         dto.setDescription(post.getDescription());
         dto.setCreatedAt(post.getCreatedAt());
         dto.setTag(post.getTag());
-        dto.setSaved(false);
         return dto;
     }
 

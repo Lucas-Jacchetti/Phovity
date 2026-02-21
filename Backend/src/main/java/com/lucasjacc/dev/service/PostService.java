@@ -40,23 +40,29 @@ public class PostService {
         Post post = repository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
 
         long countLikes = likeRepository.countByPostId(postId);
-        boolean likedByMe = likeRepository.existsByPostIdAndAuthorId(postId, userId);
+        boolean likedByMe = likeRepository.existsByPostIdAndAuthorId(postId, userId);   
+
+        boolean savedByMe = userRepository.existsSavedPost(userId, postId);
 
         PostResponseDto dto = PostMapper.toResponse(post);
         dto.setLikeCount(countLikes);
         dto.setLikedByMe(likedByMe);
+        dto.setSavedByMe(savedByMe);
 
         return dto;
     }
 
     public List<PostResponseDto> getSavedPosts(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         return user.getSavedPosts()
-                .stream()
-                .map(PostMapper::toResponse)
-                .toList();
+            .stream()
+            .map(post -> {
+                PostResponseDto dto = PostMapper.toResponse(post);
+                dto.setSavedByMe(true);
+                return dto;
+            })
+            .toList();
     }
 
     @Transactional
