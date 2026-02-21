@@ -3,6 +3,7 @@ package com.lucasjacc.dev.controller;
 import java.util.List;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,18 @@ public class PostController {
             throw new RuntimeException("Usuário não encontrado");
         }
         return service.getSavedPosts(user.getId());
+    }
+
+    @PostMapping("/{postId}/save")
+    public ResponseEntity<?> toggleSave(@PathVariable Long postId, Authentication auth) {
+        String email = auth.getName();
+        User user = (User) repository.findByEmail(email);
+
+        if (user == null) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
+
+        return ResponseEntity.ok(service.toggleSave(postId, user.getId()));
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

@@ -16,7 +16,18 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
     const [comment, setComment] = useState("");
     const [like, setLike] = useState(false);
     const [likeCount, setLikecount] = useState(0);
+    const [saved, setSaved] = useState(false);
     
+    const handleSave = async (event: { preventDefault: () => void }) => {
+      event.preventDefault()
+
+      try {
+        const response = await api.post(`/posts/${post.id}/save`)
+        setSaved(response.data.saved)
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
     const handleLike = async (event: { preventDefault: () => void }) => {
         event.preventDefault()
@@ -140,7 +151,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
               <button onClick={handleLike} className="hover:scale-110 transition hover:cursor-pointer">♥️</button>
               <div className="text-sm font-semibold">{likeCount}</div>
               <div className="ml-5 text-[15px]">{post.tag && '#' + post.tag}</div>
-              <button className="ml-5 text-[15px] hover:cursor-pointer"><Bookmark size={20}/></button>
+              <button onClick={handleSave} className="ml-5 text-[15px] hover:cursor-pointer"><Bookmark size={20} fill={saved ? "currentColor" : "none"}/></button>
             </div>
 
             <div className="flex gap-3">

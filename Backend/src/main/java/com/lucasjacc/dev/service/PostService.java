@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lucasjacc.dev.dto.post.PostCreateDto;
 import com.lucasjacc.dev.dto.post.PostResponseDto;
+import com.lucasjacc.dev.dto.save.SaveResponseDto;
 import com.lucasjacc.dev.exception.ResourceNotFoundException;
 import com.lucasjacc.dev.mapper.PostMapper;
 import com.lucasjacc.dev.model.Post;
@@ -21,11 +23,13 @@ public class PostService {
     private PostRepository repository;
     private LikeRepository likeRepository;
     private UserRepository userRepository;
+    private PostRepository postRepository;
     
-    public PostService(PostRepository repository, LikeRepository likeRepository, UserRepository userRepository){
+    public PostService(PostRepository repository, LikeRepository likeRepository, UserRepository userRepository, PostRepository postRepository){
         this.repository = repository;
         this.likeRepository = likeRepository;
         this.userRepository = userRepository;
+        this.postRepository = postRepository;
     }
 
     public List<PostResponseDto> getAll(){
@@ -55,15 +59,34 @@ public class PostService {
                 .toList();
     }
 
+    @Transactional
+    public SaveResponseDto toggleSave(Long postId, Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
+        
+        boolean alreadySaved = user.getSavedPosts().contains(post);
+
+        if (alreadySaved) {
+            user.getSavedPosts().remove(post);
+        } else {
+            user.getSavedPosts().add(post);
+        }
+
+        userRepository.save(user);
+
+        return new SaveResponseDto(!alreadySaved);
+    }
+
     public List<PostResponseDto> getByUser(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("Usuário não encontrado");
         }
 
         return repository.findByAuthorId(userId)    
-                .stream()
-                .map(PostMapper::toResponse)
-                .toList();
+            .stream()
+            .map(PostMapper::toResponse)
+            .toList();
     }
 
     public PostResponseDto create(PostCreateDto dto, MultipartFile image, User author){
