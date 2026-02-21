@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { api } from "../services/apiService"
 import { Client } from "@stomp/stompjs"
+import { Bookmark } from "lucide-react"
 import SockJS from "sockjs-client"
 
 type OpenPostProps = {
@@ -139,6 +140,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
               <button onClick={handleLike} className="hover:scale-110 transition hover:cursor-pointer">♥️</button>
               <div className="text-sm font-semibold">{likeCount}</div>
               <div className="ml-5 text-[15px]">{post.tag && '#' + post.tag}</div>
+              <button className="ml-5 text-[15px] hover:cursor-pointer"><Bookmark size={20}/></button>
             </div>
 
             <div className="flex gap-3">

@@ -45,6 +45,16 @@ public class PostService {
         return dto;
     }
 
+    public List<PostResponseDto> getSavedPosts(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
+        return user.getSavedPosts()
+                .stream()
+                .map(PostMapper::toResponse)
+                .toList();
+    }
+
     public List<PostResponseDto> getByUser(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("Usuário não encontrado");

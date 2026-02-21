@@ -54,6 +54,17 @@ public class PostController {
         return service.getByUser(user.getId());
     }
 
+    @GetMapping("/user/saved")
+    public List<PostResponseDto> getSavedPosts(Authentication auth){
+        String email = auth.getName();
+        User user = (User) repository.findByEmail(email);
+        
+        if (user == null) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
+        return service.getSavedPosts(user.getId());
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PostResponseDto create(@RequestPart("data") String data, @RequestPart("image") MultipartFile image, Authentication authentication) throws Exception{
         ObjectMapper mapper = new ObjectMapper();
