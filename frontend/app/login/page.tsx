@@ -26,7 +26,7 @@ export default function LoginPage() {
 
     try{
       await api.post('/auth/login', newLogin)
-      router.push("/explore");
+      router.push("/home");
     }catch(error){
       setResponseMessage("Houve um problema no login");
     };
@@ -89,11 +89,6 @@ export default function LoginPage() {
               </button>
             </div>
 
-            <div className="text-right mt-2">
-              <a href="#" className="text-sm text-gray-500 hover:underline">
-                Esqueci minha senha
-              </a>
-            </div>
           </div>
 
           <button

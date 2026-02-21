@@ -2,9 +2,7 @@
 
 import {
   Home,
-  Compass,
   Plus,
-  Bell,
   Bookmark,
   Settings,
   User
@@ -28,21 +26,9 @@ export function Sidebar() {
         />
 
         <IconButton
-          icon={<Compass size={20} />}
-          active={pathname.startsWith('/explore')}
-          onClick={() => router.push('/explore')}
-        />
-
-        <IconButton
           icon={<Plus size={20} />}
           active={pathname.startsWith('/post')}
           onClick={() => router.push('/post')}
-        />
-
-        <IconButton
-          icon={<Bell size={20} />}
-          active={pathname.startsWith('/notifications')}
-          onClick={() => router.push('/notifications')}
         />
 
         <IconButton
