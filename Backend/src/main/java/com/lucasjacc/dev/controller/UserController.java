@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lucasjacc.dev.dto.user.UserResponseDto;
 import com.lucasjacc.dev.dto.user.UserUpdateDto;
@@ -56,5 +58,11 @@ public class UserController {
         User user = (User) repository.findByEmail(email);
 
         return service.updateUser(user.getId(), dto);
+    }
+
+    @PutMapping("/me/profile-image")
+    public UserResponseDto updateProfileImg(@RequestPart("image") MultipartFile image, Authentication auth){
+        String email = auth.getName();
+        return service.updateProfileImage(email, image);
     }
 }

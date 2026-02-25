@@ -3,6 +3,9 @@ package com.lucasjacc.dev.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.lucasjacc.dev.dto.user.UserResponseDto;
 import com.lucasjacc.dev.dto.user.UserUpdateDto;
 import com.lucasjacc.dev.mapper.UserMapper;
@@ -35,8 +38,18 @@ public class UserService {
         User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         user.setBio(dto.getBio());
         user.setUserName(dto.getUserName());
-        user.setProfileImgUrl(dto.getProfileImgUrl());
         repository.save(user);
+        return UserMapper.toResponse(user);
+    }
+
+    @Transactional
+    public UserResponseDto updateProfileImage(String email, MultipartFile image) {
+        User user = (User) repository.findByEmail(email);
+
+        String imageUrl = FileStorageService.save(image);
+
+        user.setProfileImgUrl(imageUrl);
+
         return UserMapper.toResponse(user);
     }
 }

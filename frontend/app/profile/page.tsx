@@ -11,13 +11,23 @@ export default function ProfileHeader() {
   const [bio, setBio] = useState("");
   const [activeBio, setActiveBio] = useState(false);
   const [profileImgUrl, setProfileImgUrl] = useState(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   async function fetchProfile(){
     try {
       const response = await api.get("/users/me")
       setUserName(response.data.userName)
+
       setBio(response.data.bio ?? "")
+
+      setPreview(
+        response.data.profileImgUrl
+          ? `http://localhost:8080${response.data.profileImgUrl}`
+          : null
+      );
+
       if (!response.data.bio || response.data.bio.trim() === "") {
         setActiveBio(true);
       } else {
@@ -27,6 +37,23 @@ export default function ProfileHeader() {
       console.log(error)
     } finally {
     setLoading(false);
+    }
+  }
+
+  async function handleUpload(file: File){
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await api.put("/users/me/profile-image", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    setProfileImgUrl(response.data.profileImgUrl);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -56,14 +83,33 @@ export default function ProfileHeader() {
         <Sidebar />
         <div className="flex gap-10 items-start">
           
-          <div className="shrink-0">
-            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-md">
-              <img
-                src="https://i.pravatar.cc/300"
-                alt="Profile"
-                className="w-full h-full object-cover"
-              />
-            </div>
+          <div className="shrink-0 relative">
+            <label htmlFor="profile-upload" className="cursor-pointer">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-md hover:opacity-80 transition">
+                <img
+                  src={
+                    preview || "https://icones.pro/wp-content/uploads/2021/02/icono-de-camara-gris.png"
+                  }
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </label>
+
+            <input
+              id="profile-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  const file = e.target.files[0];
+                  setImage(file);
+                  setPreview(URL.createObjectURL(file));  
+                  handleUpload(file);
+                }
+              }}
+            />
           </div>
 
           <div className="flex flex-col gap-4 flex-1">
