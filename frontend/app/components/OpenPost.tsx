@@ -17,6 +17,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
     const [like, setLike] = useState(false);
     const [likeCount, setLikecount] = useState(0);
     const [saved, setSaved] = useState(false);
+    const [profileImage, setProfileImage] = useState<File | null>(null);
     
     const handleSave = async (event: { preventDefault: () => void }) => {
       event.preventDefault()
@@ -122,8 +123,16 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
 
           <div className="p-5 border-b border-b-gray-500 flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-gray-300 rounded-full"></div>
-              <span className="font-semibold">{post.author?.username || 'username'}</span>
+              <div className="w-9 h-9 rounded-full overflow-hidden bg-white">
+                <img
+                  src={`http://localhost:8080${post.author?.profileImageUrl}`}
+                  alt="pfp"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span className="font-semibold">
+                {post.author?.username || 'username'}
+              </span>
             </div>
 
             <button onClick={onClose} className="text-gray-500 hover:text-black text-xl hover:cursor-pointer">
