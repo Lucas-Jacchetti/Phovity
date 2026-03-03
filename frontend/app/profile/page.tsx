@@ -85,7 +85,7 @@ export default function ProfileHeader() {
           
           <div className="shrink-0 relative">
             <label htmlFor="profile-upload" className="cursor-pointer">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-md hover:opacity-80 transition">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-neutral-700 shadow-md hover:opacity-80 transition">
                 <img
                   src={
                     preview || "https://icones.pro/wp-content/uploads/2021/02/icono-de-camara-gris.png"
@@ -115,28 +115,28 @@ export default function ProfileHeader() {
           <div className="flex flex-col gap-4 flex-1">
             
             <div className="flex items-center gap-6">
-              {userName && <h2 className="text-2xl font-semibold text-black">{userName}</h2>}
+              {userName && <h2 className="text-2xl font-semibold text-black dark:text-white" >{userName}</h2>}
 
-              <button className="bg-black text-white text-sm px-4 py-1.5 rounded-md hover:bg-gray-800 transition hover:cursor-pointer" onClick={() => setActiveBio(true)}>
+              <button className="bg-black text-white dark:bg-neutral-200  dark:text-black text-sm px-4 py-1.5 rounded-md hover:bg-gray-800 transition hover:cursor-pointer" onClick={() => setActiveBio(true)}>
                 Editar Perfil
               </button>
             </div>
 
             <div className="flex flex-col gap-2 text-sm">
               {!activeBio ? (
-                <p className="text-black max-w-md">
+                <p className="text-black dark:text-white max-w-md">
                   {bio}
                 </p>
               ) : (
                 <div className="flex items-start gap-2">
                   <textarea
-                    className="w-full text-black max-w-md h-24 resize-none rounded-lg border border-gray-300 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full text-black dark:text-white dark:bg-neutral-800 max-w-md h-24 resize-none rounded-lg border border-gray-300 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-black"
                     placeholder="Escreva uma bio..."
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                   />
                   <button
-                    className="bg-black text-white px-3 py-2 rounded-md text-sm hover:bg-gray-800 transition hover:cursor-pointer"
+                    className="bg-black text-white dark:bg-neutral-200  dark:text-black px-3 py-2 rounded-md text-sm hover:bg-gray-800 transition hover:cursor-pointer"
                     onClick={handleUpdateProfile}
                   >
                     Salvar

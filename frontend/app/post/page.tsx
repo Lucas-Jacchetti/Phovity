@@ -38,9 +38,9 @@ export default function CreatePostView() {
             "Content-Type": "multipart/form-data",
           },
         }); 
-        setResponseMessage("Post concluído!")
+        setResponseMessage("Post realizado!")
     } catch (error) {
-      setResponseMessage("Ocorreu um erro ao fazer o post")
+      setResponseMessage("Ocorreu um erro ao fazer o post!")
     }
   }
 
@@ -54,23 +54,23 @@ export default function CreatePostView() {
   return (
     <div className="w-full">
      <Sidebar/>
-     <div className="min-h-screen bg-white px-8 py-10">
+     <div className="min-h-screen px-8 py-10">
       <div className="mx-auto max-w-5xl">
-        <h1 className="text-2xl font-semibold text-gray-900">
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
           Criar Novo Post
         </h1>
-        <p className="mb-8 text-sm text-gray-500">
+        <p className="mb-8 text-sm text-gray-500 dark:text-gray-300">
           Preencha os campos abaixo para criar seu post
         </p>
 
         <form className="grid grid-cols-1 gap-6 md:grid-cols-3" onSubmit={handleSubmit}>
           <div className="space-y-6 md:col-span-2">
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 DESCRIÇÃO DO POST
               </label>
               <textarea
-                className="h-40 w-full text-black resize-none rounded-lg border border-gray-300 p-4 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
+                className="h-40 w-full dark:bg-neutral-800 text-black dark:text-white resize-none rounded-lg border border-gray-300 p-4 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="Escreva a descrição do seu post aqui..."
                 value={description}
                 onChange={(e) => setDescripion(e.target.value)}
@@ -78,12 +78,12 @@ export default function CreatePostView() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 TAG
               </label>
               <input
                 type="text"
-                className="w-full text-black rounded-lg border border-gray-300 p-3 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full text-black dark:bg-neutral-800 dark:text-white rounded-lg border border-gray-300 p-3 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="Ex: Natureza, Esportes, Fotografia de rua..."
                 value={tag}
                 onChange={(e) => setTag(e.target.value)}
@@ -100,7 +100,7 @@ export default function CreatePostView() {
               <button
                 onClick={handleCancel}
                 type="button"
-                className="rounded-lg bg-gray-200 px-6 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 hover:cursor-pointer"
+                className="rounded-lg bg-gray-200 px-6 py-2 text-sm font-medium text-gray-700 dark:text-black hover:bg-gray-300 hover:cursor-pointer"
               >
                 Cancelar
               </button>
@@ -110,12 +110,12 @@ export default function CreatePostView() {
           <div>
             <label
               htmlFor="image-upload"
-              className="mt-7 flex h-56 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 text-center hover:border-black transition"
+              className="mt-7 dark:bg-neutral-800 flex h-56 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 text-center hover:border-black transition"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black dark:bg-neutral-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-white"
+                  className="h-5 w-5 text-white dark:text-black"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -129,12 +129,12 @@ export default function CreatePostView() {
                 </svg>
               </div>
 
-              <p className="text-sm font-medium text-gray-800">
+              <p className="text-sm font-medium text-gray-800 dark:text-gray-300">
                 Upload de Imagem
               </p>
 
               {image && (
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-gray-500 mt-2 dark:text-gray-200">
                   {image.name}
                 </p>
               )}
@@ -153,7 +153,7 @@ export default function CreatePostView() {
             />
           </div>
         </form>
-        {responseMessage && <p className="text-black mt-3.5 ml-2">{responseMessage}</p>}
+        {responseMessage && <p className="text-black dark:text-gray-300 mt-3.5 ml-2">{responseMessage}</p>}
       </div>
     </div>
    </div>

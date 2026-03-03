@@ -10,8 +10,8 @@ export default function FeedPage() {
         <div className='flex flex-row'>
           <main className="ml-16 flex-1 p-8 ">
             <header className="mb-8">
-              <h1 className="text-2xl font-semibold text-black">Home</h1>
-              <p className="text-sm text-gray-600">
+              <h1 className="text-2xl font-semibold text-black dark:text-white">Home</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-500">
                 Tudo que você gosta
               </p>
             </header>

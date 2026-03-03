@@ -108,15 +108,15 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 text-black">
 
-      <div className="bg-white w-[95%] max-w-5xl h-[85%] rounded-2xl flex overflow-hidden shadow-2xl ">
+      <div className="bg-white dark:bg-neutral-800 w-[95%] max-w-5xl h-[85%] rounded-2xl flex overflow-hidden shadow-2xl ">
 
-        <div className="w-1/2 bg-gray-100 flex flex-col items-center justify-center">
+        <div className="w-1/2 bg-gray-100 dark:bg-neutral-800 flex flex-col items-center justify-center">
           <img
             src={`http://localhost:8080${post.postImgUrl}`}
             alt="Post"
             className="max-h-full object-contain p-3"
           />
-          <div className="mt-5">{post.description || ''}</div>
+          <div className="mt-5 dark:text-neutral-100">{post.description || ''}</div>
         </div>
 
         <div className="w-1/2 flex flex-col">
@@ -125,17 +125,18 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-full overflow-hidden bg-white">
                 <img
-                  src={`http://localhost:8080${post.author?.profileImageUrl}`}
+                  src={
+                    post.author?.profileImageUrl?.length ? `http://localhost:8080${post.author.profileImageUrl}` : "https://icones.pro/wp-content/uploads/2021/02/icono-de-camara-gris.png"}
                   alt="pfp"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span className="font-semibold">
+              <span className="font-semibold dark:text-neutral-100">
                 {post.author?.username || 'username'}
               </span>
             </div>
 
-            <button onClick={onClose} className="text-gray-500 hover:text-black text-xl hover:cursor-pointer">
+            <button onClick={onClose} className="text-gray-500 dark:text-neutral-100   hover:text-black text-xl hover:cursor-pointer">
               ✕
             </button>
           </div>
@@ -147,8 +148,8 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
                 </p>
             ) : (
                 comments.map((c) => (
-                <div key={c.id} className="text-sm">
-                    <span className="font-semibold">{c.author?.username}</span>{" "}
+                <div key={c.id} className="text-sm dark:text-neutral-200">
+                    <span className="font-semibold ">{c.author?.username}</span>{" "}
                     {c.text}
                 </div>
                 ))
@@ -159,9 +160,9 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
 
             <div className="flex items-center gap-2 text-xl">
               <button onClick={handleLike} className="hover:scale-110 transition hover:cursor-pointer">♥️</button>
-              <div className="text-sm font-semibold">{likeCount}</div>
-              <div className="ml-5 text-[15px]">{post.tag && '#' + post.tag}</div>
-              <button onClick={handleSave} className="ml-5 text-[15px] hover:cursor-pointer"><Bookmark size={20} fill={saved ? "currentColor" : "none"}/></button>
+              <div className="text-sm font-semibold dark:text-neutral-100">{likeCount}</div>
+              <div className="ml-5 text-[15px] dark:text-neutral-100">{post.tag && '#' + post.tag}</div>
+              <button onClick={handleSave} className="ml-5 text-[15px] dark:text-white hover:cursor-pointer"><Bookmark size={20} fill={saved ? "currentColor" : "none"}/></button>
             </div>
 
             <div className="flex gap-3">
@@ -169,7 +170,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
                 value={comment} onChange={(e) => setComment(e.target.value)}
                 type="text"
                 placeholder="Adicione um comentário..."
-                className="flex-1 border rounded-lg px-4 py-2 text-sm outline-none"
+                className="flex-1 border rounded-lg px-4 py-2 text-sm outline-none dark:text-neutral-100 dark:border-neutral-500"
               />
               <button className="text-black bg-blue-400 font-semibold rounded-lg hover:cursor-pointer" onClick={handleComment}>
                 <p className="p-3">Publicar</p>

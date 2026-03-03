@@ -1,5 +1,6 @@
 'use client'
 
+import { ModeToggle } from "../components/ModeToggle"
 import { Sidebar } from "../components/Sidebar"
 import { useEffect, useState } from "react"
 
@@ -30,13 +31,7 @@ export default function Settings() {
                 </p>
               </div>
 
-              <button
-                className="relative inline-flex h-7 w-14 items-center rounded-full transition-colors duration-300"
-              >
-                <span
-                  className="absolute h-5 w-5 rounded-full bg-white shadow-md transform transition-transform duration-300"
-                />
-              </button>
+              <ModeToggle/>
 
             </div>
 
