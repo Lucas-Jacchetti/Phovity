@@ -93,14 +93,14 @@ export default function CreatePostView() {
             <div className="flex gap-3">
               <button
                 type="submit"
-                className="rounded-lg bg-black px-6 py-2 text-sm font-medium text-white hover:bg-gray-900 hover:cursor-pointer"
+                className="rounded-lg bg-black dark:bg-white px-6 py-2 text-sm font-medium text-white dark:text-black hover:bg-gray-900 hover:cursor-pointer"
               >
                 Publicar Post
               </button>
               <button
                 onClick={handleCancel}
                 type="button"
-                className="rounded-lg bg-gray-200 px-6 py-2 text-sm font-medium text-gray-700 dark:text-black hover:bg-gray-300 hover:cursor-pointer"
+                className="rounded-lg bg-gray-200 dark:bg-neutral-800 px-6 py-2 text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-300 hover:cursor-pointer"
               >
                 Cancelar
               </button>
