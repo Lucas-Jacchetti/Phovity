@@ -12,37 +12,44 @@ export default function CreatePostView() {
   const [image, setImage] = useState<File | null>(null);
   const [responseMessage, setResponseMessage] = useState("");
 
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const formData = new FormData();
 
     if (!image) {
       setResponseMessage("Selecione uma imagem");
       return;
     }
 
-    formData.append(
-      "data",
-      new Blob(
-        [JSON.stringify({ description, tag })],
-        { type: "application/json" }
-      )
-    );
-    formData.append("image", image);
-
     try {
-      await api
-        .post("/posts", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }); 
-        setResponseMessage("Post realizado!")
+
+      const cloudinaryForm = new FormData();
+      cloudinaryForm.append("file", image);
+      cloudinaryForm.append("upload_preset", "phovity_upload");
+
+      const cloudinaryResponse = await fetch(
+        "https://api.cloudinary.com/v1_1/dc8naqlov/image/upload",
+        {
+          method: "POST",
+          body: cloudinaryForm
+        }
+      );
+
+      const cloudinaryData = await cloudinaryResponse.json();
+
+      const imageUrl = cloudinaryData.secure_url;
+
+      await api.post("/posts", {
+        description,
+        tag,
+        imgUrl: imageUrl
+      });
+
+      setResponseMessage("Post realizado!");
+
     } catch (error) {
-      setResponseMessage("Ocorreu um erro ao fazer o post!")
+      setResponseMessage("Ocorreu um erro ao fazer o post!");
     }
-  }
+  };
 
   const handleCancel = () => {
     setTag("")

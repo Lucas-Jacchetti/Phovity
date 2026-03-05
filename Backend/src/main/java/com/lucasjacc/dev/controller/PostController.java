@@ -2,17 +2,15 @@ package com.lucasjacc.dev.controller;
 
 import java.util.List;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.lucasjacc.dev.dto.post.PostCreateDto;
 import com.lucasjacc.dev.dto.post.PostResponseDto;
@@ -20,7 +18,6 @@ import com.lucasjacc.dev.model.User;
 import com.lucasjacc.dev.repository.UserRepository;
 import com.lucasjacc.dev.service.PostService;
 
-import tools.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/posts")
@@ -78,15 +75,12 @@ public class PostController {
         return ResponseEntity.ok(service.toggleSave(postId, user.getId()));
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PostResponseDto create(@RequestPart("data") String data, @RequestPart("image") MultipartFile image, Authentication authentication) throws Exception{
-        ObjectMapper mapper = new ObjectMapper();
-        PostCreateDto dto = mapper.readValue(data, PostCreateDto.class);
-
+    @PostMapping
+    public PostResponseDto create(@RequestBody PostCreateDto dto, Authentication authentication) throws Exception{
         String email = authentication.getName();
         User user = (User) repository.findByEmail(email);
 
-        return service.create(dto, image, user);
+        return service.create(dto, user);
     }
 
     @DeleteMapping("/{id}")

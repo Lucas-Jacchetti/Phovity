@@ -38,7 +38,7 @@ export default function Feed() {
         <div key={post.id} className="mb-4 break-inside-avoid">
           <img
             onClick={() => setSelectedPost(post)}
-            src={`http://localhost:8080${post.postImgUrl}`}
+            src={post.postImgUrl}
             alt="Post"
             className="w-full rounded-lg object-cover hover:cursor-pointer"
           />

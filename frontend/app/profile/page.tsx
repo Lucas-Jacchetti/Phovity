@@ -23,9 +23,7 @@ export default function ProfileHeader() {
       setBio(response.data.bio ?? "")
 
       setPreview(
-        response.data.profileImgUrl
-          ? `http://localhost:8080${response.data.profileImgUrl}`
-          : null
+        response.data.profileImgUrl ?? null
       );
 
       if (!response.data.bio || response.data.bio.trim() === "") {
@@ -40,18 +38,35 @@ export default function ProfileHeader() {
     }
   }
 
-  async function handleUpload(file: File){
+  async function handleUpload(file: File) {
     try {
+
+      const cloudName = "dc8naqlov";
+      const uploadPreset = "phovity_upload";
+
       const formData = new FormData();
-      formData.append("image", file);
+      formData.append("file", file);
+      formData.append("upload_preset", uploadPreset);
 
-      const response = await api.put("/users/me/profile-image", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+      const uploadResponse = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-    setProfileImgUrl(response.data.profileImgUrl);
+      const data = await uploadResponse.json();
+
+      const imageUrl = data.secure_url;
+
+      setPreview(imageUrl);
+      setProfileImgUrl(imageUrl);
+
+      await api.put("/users/me", {
+        profileImgUrl: imageUrl
+      });
+
     } catch (error) {
       console.log(error);
     }

@@ -112,7 +112,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
 
         <div className="w-1/2 bg-gray-100 dark:bg-neutral-800 flex flex-col items-center justify-center">
           <img
-            src={`http://localhost:8080${post.postImgUrl}`}
+            src={post.postImgUrl}
             alt="Post"
             className="max-h-full object-contain p-3"
           />
@@ -126,7 +126,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
               <div className="w-9 h-9 rounded-full overflow-hidden bg-white">
                 <img
                   src={
-                    post.author?.profileImageUrl?.length ? `http://localhost:8080${post.author.profileImageUrl}` : "https://icones.pro/wp-content/uploads/2021/02/icono-de-camara-gris.png"}
+                    post.author?.profileImageUrl?.length ? post.author.profileImageUrl : "https://icones.pro/wp-content/uploads/2021/02/icono-de-camara-gris.png"}
                   alt="pfp"
                   className="w-full h-full object-cover"
                 />

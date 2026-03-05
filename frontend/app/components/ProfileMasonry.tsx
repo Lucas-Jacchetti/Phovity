@@ -31,7 +31,7 @@ export default function Feed() {
       {posts.map(post => (
         <div key={post.id} className="mb-4 break-inside-avoid">
           <img
-            src={`http://localhost:8080${post.postImgUrl}`}
+            src={post.postImgUrl}
             alt="Post"
             className="w-full rounded-lg object-cover"
           />

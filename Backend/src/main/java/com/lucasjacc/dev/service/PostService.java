@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.lucasjacc.dev.dto.post.PostCreateDto;
 import com.lucasjacc.dev.dto.post.PostResponseDto;
@@ -95,21 +94,14 @@ public class PostService {
             .toList();
     }
 
-    public PostResponseDto create(PostCreateDto dto, MultipartFile image, User author){
+    public PostResponseDto create(PostCreateDto dto, User author){
         Post post = new Post();
         post.setDescription(dto.getDescription());
         post.setTag(dto.getTag());
         post.setAuthor(author);
         post.setCreatedAt(LocalDateTime.now());
 
-        if (image.isEmpty())
-            throw new IllegalArgumentException("Imagem obrigatória");
-
-        if (!image.getContentType().startsWith("image/"))
-            throw new IllegalArgumentException("Arquivo inválido");
-
-        String imageUrl = FileStorageService.save(image);
-        post.setPostImgUrl(imageUrl);
+        post.setPostImgUrl(dto.getImgUrl());
         
         Post saved = repository.save(post);
         return PostMapper.toResponse(saved);
