@@ -18,6 +18,8 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
     const [likeCount, setLikecount] = useState(0);
     const [saved, setSaved] = useState(false);
     const [profileImage, setProfileImage] = useState<File | null>(null);
+
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
     
     const handleSave = async (event: { preventDefault: () => void }) => {
       event.preventDefault()
@@ -61,7 +63,7 @@ export default function OpenPost({post, onClose} : OpenPostProps) {
     }
 
     useEffect(() => {
-      const socket = new SockJS("http://localhost:8080/ws")
+      const socket = new SockJS(`${API_URL}/ws`)
 
       const client = new Client({
         webSocketFactory: () => socket,
