@@ -2,15 +2,23 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-  remotePatterns: [
-    {
-      protocol: 'http',
-      hostname: 'localhost',
-      port: '8080',
-      pathname: '/uploads/**',
-    },
-  ],
-}
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "phovity.onrender.com",
+        pathname: "/uploads/**",
+      },
+    ],
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "https://phovity.onrender.com/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
