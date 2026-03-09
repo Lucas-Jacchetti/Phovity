@@ -22,12 +22,11 @@ spring:
     resources:
       static-locations:
         - classpath:/static/
-        - file:uploads/
 
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 api:
   security:
     token:
-      secret: ${JWT_SECRET:my-secret-key}
+      secret: ${JWT_SECRET}
