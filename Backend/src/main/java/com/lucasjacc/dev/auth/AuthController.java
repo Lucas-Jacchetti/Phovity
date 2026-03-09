@@ -44,6 +44,7 @@ public class AuthController {
             .path("/")
             .maxAge(60 * 60 * 2)
             .sameSite("None") //mudar para none em prod
+            .path("/")
             .domain("phovity.vercel.app")
             .build();
 

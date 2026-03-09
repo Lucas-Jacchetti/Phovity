@@ -25,7 +25,7 @@ export default function LoginPage() {
     }
 
     try{
-      await api.post('/auth/login', newLogin)
+      await axios.post('/api/auth/login', newLogin, {withCredentials: true})
       router.push("/home");
     }catch(error){
       setResponseMessage("Houve um problema no login");
