@@ -41,11 +41,9 @@ public class AuthController {
         ResponseCookie cookie = ResponseCookie.from("token", token)
             .httpOnly(true)
             .secure(true) //mudar pra true em prod
-            .path("/")
             .maxAge(60 * 60 * 2)
             .sameSite("None") //mudar para none em prod
             .path("/")
-            .domain("phovity.vercel.app")
             .build();
 
             return ResponseEntity.ok()
