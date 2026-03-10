@@ -15,9 +15,21 @@ export default function Feed() {
     try {
       const response = await api.get('/posts')
       console.log("API response:", response.data)
-      setPosts(Array.isArray(response.data) ? response.data : [])
+
+      const data = response.data
+
+      if (Array.isArray(data)) {
+        setPosts(data)
+      } else if (Array.isArray(data.content)) {
+        setPosts(data.content)
+      } else {
+        console.error("Formato inesperado:", data)
+        setPosts([])
+      }
+
     } catch (error) {
       console.error(error)
+      setPosts([])
     } finally {
       setLoading(false)
     }
