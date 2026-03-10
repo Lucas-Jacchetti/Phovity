@@ -10,15 +10,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "https://phovity.onrender.com/:path*",
-      },
-    ];
-  },
 };
 
 export default nextConfig;
