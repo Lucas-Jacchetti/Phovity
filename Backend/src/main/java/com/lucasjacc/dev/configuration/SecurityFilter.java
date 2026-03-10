@@ -50,17 +50,28 @@ public class SecurityFilter extends OncePerRequestFilter{
             }
         }
 
-        filterChain.doFilter(request, response);
+        if (request.getRequestURI().equals("/auth/login")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
     }
 
     private String recoverToken(HttpServletRequest request){
-        if (request.getCookies() == null) return null;
 
-        for (Cookie cookie : request.getCookies()) {
-            if (cookie.getName().equals("token")) {
-                return cookie.getValue();
+        String authHeader = request.getHeader("Authorization");
+
+        if(authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.replace("Bearer ", "");
+        }
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("token")) {
+                    return cookie.getValue();
+                }
             }
         }
+
         return null;
     }
     
