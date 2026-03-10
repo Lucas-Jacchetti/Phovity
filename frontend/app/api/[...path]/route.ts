@@ -25,13 +25,17 @@ async function handler(
     headers,
     body:
       request.method !== "GET" && request.method !== "HEAD"
-        ? request.body
+        ? await request.text()
         : undefined,
   });
 
-  return new NextResponse(backendRes.body, {
+  const data = await backendRes.text();
+
+  return new NextResponse(data, {
     status: backendRes.status,
-    headers: backendRes.headers,
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 }
 
