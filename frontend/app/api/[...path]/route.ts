@@ -4,40 +4,39 @@ const BACKEND_URL = "https://phovity.onrender.com";
 
 async function handler(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  context: { params: Promise<{ path: string[] }> }
 ) {
+  const { path } = await context.params;
 
   const token = request.cookies.get("token")?.value;
 
-  const path = params.path.join("/");
+  const url = `${BACKEND_URL}/${path.join("/")}${request.nextUrl.search}`;
 
-  const url = `${BACKEND_URL}/${path}`;
+  const headers = new Headers(request.headers);
+
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  headers.delete("host");
 
   const backendRes = await fetch(url, {
     method: request.method,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : "",
-    },
+    headers,
     body:
       request.method !== "GET" && request.method !== "HEAD"
-        ? await request.text()
+        ? request.body
         : undefined,
   });
 
-  const data = await backendRes.text();
-
-  return new NextResponse(data, {
+  return new NextResponse(backendRes.body, {
     status: backendRes.status,
-    headers: {
-      "Content-Type":
-        backendRes.headers.get("content-type") || "application/json",
-    },
+    headers: backendRes.headers,
   });
 }
 
 export { handler as GET };
 export { handler as POST };
 export { handler as PUT };
-export { handler as DELETE };
 export { handler as PATCH };
+export { handler as DELETE };
