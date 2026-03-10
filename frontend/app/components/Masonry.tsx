@@ -14,7 +14,8 @@ export default function Feed() {
   async function fetchPosts() {
     try {
       const response = await api.get('/posts')
-      setPosts(response.data)
+      console.log("API response:", response.data)
+      setPosts(Array.isArray(response.data) ? response.data : [])
     } catch (error) {
       console.error(error)
     } finally {
