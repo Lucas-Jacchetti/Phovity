@@ -31,6 +31,11 @@ async function handler(
 
   const data = await backendRes.text();
 
+  console.log("URL chamada:", url);
+  console.log("Token presente:", !!token);
+  console.log("Status resposta:", backendRes.status);
+  console.log("Resposta:", data.slice(0, 300));
+
   return new NextResponse(data, {
     status: backendRes.status,
     headers: {
