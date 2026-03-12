@@ -32,7 +32,9 @@ public class PostService {
     }
 
     public List<PostResponseDto> getAll(){
-        return repository.findAll().stream().map(PostMapper::toResponse).toList();
+        List<Post> posts = repository.findAll();
+        System.out.println("Total de posts encontrados: " + posts.size());
+        return posts.stream().map(PostMapper::toResponse).toList();
     }
 
     public PostResponseDto getPost(Long postId, Long userId){
