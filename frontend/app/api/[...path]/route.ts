@@ -36,10 +36,12 @@ async function handler(
   console.log("Status resposta:", backendRes.status);
   console.log("Resposta:", data.slice(0, 300));
 
+  const contentType = backendRes.headers.get("content-type") || "application/json";
+
   return new NextResponse(data, {
     status: backendRes.status,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": contentType,
     },
   });
 }
