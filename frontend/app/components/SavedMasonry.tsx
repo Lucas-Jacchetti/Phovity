@@ -10,7 +10,13 @@ export default function Feed() {
   async function fetchPosts() {
     try {
       const response = await api.get('/posts/user/saved')
-      setPosts(response.data)
+      const data = response.data
+      if (Array.isArray(data)) {
+        setPosts(data)
+      } else {
+        console.error("Formato inesperado:", data)
+        setPosts([])
+      }
     } catch (error) {
       console.error(error)
     } finally {

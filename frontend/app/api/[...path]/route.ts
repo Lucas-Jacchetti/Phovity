@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = "https://phovity.onrender.com";
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL;
 
 async function handler(
   request: NextRequest,
@@ -36,14 +36,15 @@ async function handler(
   console.log("Status resposta:", backendRes.status);
   console.log("Resposta:", data.slice(0, 300));
 
-  const contentType = backendRes.headers.get("content-type") || "application/json";
-
-  return new NextResponse(data, {
+  const response = new NextResponse(data, {
     status: backendRes.status,
-    headers: {
-      "Content-Type": contentType,
-    },
   });
+
+  backendRes.headers.forEach((value, key) => {
+    response.headers.set(key, value);
+  });
+
+  return response;
 }
 
 export { handler as GET };

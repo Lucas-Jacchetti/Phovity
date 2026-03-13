@@ -42,6 +42,8 @@ public class TokenService {
                 .verify(token)
                 .getSubject();
         } catch (JWTVerificationException e) {
+            System.out.println("SECRET USADO: " + secret);
+            e.printStackTrace(); 
             return null;
         }
     }

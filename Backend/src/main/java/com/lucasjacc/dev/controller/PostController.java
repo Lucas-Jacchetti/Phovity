@@ -31,6 +31,7 @@ public class PostController {
 
     @GetMapping
     public List<PostResponseDto> getAll(){
+        System.out.println("CONTROLLER /posts EXECUTADO");
         return service.getAll();
     }
 
