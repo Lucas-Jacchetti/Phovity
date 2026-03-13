@@ -38,6 +38,9 @@ async function handler(
   });
 
   backendRes.headers.forEach((value, key) => {
+    if (key.toLowerCase() === "content-encoding") return;
+    if (key.toLowerCase() === "content-length") return;
+
     response.headers.set(key, value);
   });
 
