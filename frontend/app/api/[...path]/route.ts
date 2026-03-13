@@ -25,18 +25,15 @@ async function handler(
     headers,
     body:
       request.method !== "GET" && request.method !== "HEAD"
-        ? await request.text()
+        ? request.body
         : undefined,
   });
-
-  const data = await backendRes.text();
 
   console.log("URL chamada:", url);
   console.log("Token presente:", !!token);
   console.log("Status resposta:", backendRes.status);
-  console.log("Resposta:", data.slice(0, 300));
 
-  const response = new NextResponse(data, {
+  const response = new NextResponse(backendRes.body, {
     status: backendRes.status,
   });
 
