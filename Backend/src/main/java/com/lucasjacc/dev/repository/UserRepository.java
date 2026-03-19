@@ -11,6 +11,8 @@ import com.lucasjacc.dev.model.User;
 public interface UserRepository extends JpaRepository<User, Long>{
     Optional<User> findByUserName(String userName);
     UserDetails findByEmail(String email);
+    Boolean existsByEmail(String email);
+    Boolean existsByUserName(String userName);
 
     @Query("""
         SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END

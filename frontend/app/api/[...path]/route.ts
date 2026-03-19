@@ -1,50 +1,82 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 async function handler(
   request: NextRequest,
   context: { params: Promise<{ path: string[] }> }
 ) {
-  const { path } = await context.params;
+  try {
+    const { path } = await context.params;
 
-  const token = request.cookies.get("token")?.value;
+    const token = request.cookies.get("token")?.value;
 
-  const url = `${BACKEND_URL}/${path.join("/")}${request.nextUrl.search}`;
+    const url = `${BACKEND_URL}/${path.join("/")}${request.nextUrl.search}`;
 
-  const headers = new Headers(request.headers);
+    const headers = new Headers();
 
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
+    request.headers.forEach((value, key) => {
+      const lower = key.toLowerCase();
+
+      if (
+        lower === "host" ||
+        lower === "content-length" ||
+        lower === "connection"
+      ) return;
+
+      headers.set(key, value);
+    });
+
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+
+    let body: any = undefined;
+
+    if (request.method !== "GET" && request.method !== "HEAD") {
+      const contentType = request.headers.get("content-type") || "";
+
+      if (contentType.includes("application/json")) {
+        const json = await request.json();
+        body = JSON.stringify(json);
+        headers.set("Content-Type", "application/json");
+      } else {
+        body = await request.text();
+      }
+    }
+
+    const backendRes = await fetch(url, {
+      method: request.method,
+      headers,
+      body,
+      duplex: "half", 
+    } as RequestInit);
+
+    const response = new NextResponse(backendRes.body, {
+      status: backendRes.status,
+    });
+
+    backendRes.headers.forEach((value, key) => {
+      const lower = key.toLowerCase();
+
+      if (
+        lower === "content-encoding" ||
+        lower === "content-length" ||
+        lower === "transfer-encoding"
+      ) return;
+
+      response.headers.set(key, value);
+    });
+
+    return response;
+  } catch (error) {
+    console.error("PROXY ERROR:", error);
+
+    return NextResponse.json(
+      { error: "Erro no proxy" },
+      { status: 500 }
+    );
   }
-
-  headers.delete("host");
-
-  const backendRes = await fetch(url, {
-    method: request.method,
-    headers,
-    body:
-      request.method !== "GET" && request.method !== "HEAD"
-        ? request.body
-        : undefined,
-  });
-
-  console.log("URL chamada:", url);
-  console.log("Token presente:", !!token);
-  console.log("Status resposta:", backendRes.status);
-
-  const response = new NextResponse(backendRes.body, {
-    status: backendRes.status,
-  });
-
-  backendRes.headers.forEach((value, key) => {
-    if (key.toLowerCase() === "content-encoding") return;
-    if (key.toLowerCase() === "content-length") return;
-
-    response.headers.set(key, value);
-  });
-
-  return response;
 }
 
 export { handler as GET };

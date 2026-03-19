@@ -1,5 +1,7 @@
 package com.lucasjacc.dev.auth;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -15,9 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lucasjacc.dev.dto.user.UserCreateDto;
 import com.lucasjacc.dev.jwt.TokenService;
-import com.lucasjacc.dev.mapper.UserMapper;
 import com.lucasjacc.dev.model.User;
 import com.lucasjacc.dev.repository.UserRepository;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("auth")
@@ -53,13 +56,31 @@ public class AuthController {
 
     
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Validated UserCreateDto data){
-        if (repository.findByEmail(data.getEmail()) != null) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> register(@RequestBody @Valid UserCreateDto data){
+
+        if (repository.existsByEmail(data.getEmail())) {
+            return ResponseEntity
+                .badRequest()
+                .body(Map.of("error", "Email já está em uso"));
         }
-        
-        data.setPassword(new BCryptPasswordEncoder().encode(data.getPassword()));
-        User user = UserMapper.toEntity(data);
+
+        if (repository.existsByUserName(data.getUserName())) {
+            return ResponseEntity
+                .badRequest()
+                .body(Map.of("error", "Username já está em uso"));
+        }
+
+        if (data.getUserName().trim().isEmpty()) {
+            return ResponseEntity
+                .badRequest()
+                .body(Map.of("error", "Username não pode ser vazio"));
+        }
+
+        User user = new User();
+        user.setUserName(data.getUserName().trim());
+        user.setEmail(data.getEmail());
+        user.setPassword(new BCryptPasswordEncoder().encode(data.getPassword()));
+
         repository.save(user);
 
         return ResponseEntity.ok().build();

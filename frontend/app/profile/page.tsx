@@ -40,7 +40,6 @@ export default function ProfileHeader() {
 
   async function handleUpload(file: File) {
     try {
-
       const cloudName = "dc8naqlov";
       const uploadPreset = "phovity_upload";
 
@@ -57,13 +56,14 @@ export default function ProfileHeader() {
       );
 
       const data = await uploadResponse.json();
-
       const imageUrl = data.secure_url;
 
       setPreview(imageUrl);
       setProfileImgUrl(imageUrl);
 
       await api.put("/users/me", {
+        userName,
+        bio,
         profileImgUrl: imageUrl
       });
 

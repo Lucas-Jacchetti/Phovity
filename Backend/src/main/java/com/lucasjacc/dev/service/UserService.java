@@ -34,9 +34,15 @@ public class UserService {
 
     public UserResponseDto updateUser(Long id, UserUpdateDto dto) {
         User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
-        user.setBio(dto.getBio());
-        user.setUserName(dto.getUserName());
-        user.setProfileImgUrl(dto.getProfileImgUrl());
+        if (dto.getBio() != null) {
+            user.setBio(dto.getBio());
+        }
+        if (dto.getUserName() != null) {
+            user.setUserName(dto.getUserName());
+        }
+        if (dto.getProfileImgUrl() != null) {
+            user.setProfileImgUrl(dto.getProfileImgUrl());
+        }
         repository.save(user);
         return UserMapper.toResponse(user);
     }
