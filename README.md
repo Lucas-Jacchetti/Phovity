@@ -3,7 +3,7 @@
 Um mvp de rede social para fotógrafos onde usuários podem publicar, explorar e salvar imagens.
 O site está disponível em https://phovity.vercel.app/login
 
-<img width="1902" height="957" alt="Captura de tela 2026-05-11 141823" src="https://github.com/user-attachments/assets/c26db0cf-da60-4519-94bb-c59305c5d80f" />
+<img width="1900" height="957" alt="Captura de tela 2026-05-11 141823" src="https://github.com/user-attachments/assets/a6d6a5f8-e9bb-4aab-981c-f67aa645d0ee" />
 
 ## Tecnologias utilizadas
 
